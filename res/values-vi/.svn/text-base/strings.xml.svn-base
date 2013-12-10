@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Xin chào</string>
+    <string name="app_name">Phone Utility</string>
+    <string name="delete">Xóa</string>
+    <string name="rename">Đổi tên</string>
+    <string name="cut">Cắt</string>
+    <string name="paste">Dán</string>
+    <string name="copy">Sao chép</string>
+
+</resources>

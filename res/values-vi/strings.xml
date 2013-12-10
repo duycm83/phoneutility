@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Xin chào</string>
+    <string name="app_name">Phone Utility</string>
+    <string name="version">Phiên bản:1.0 (build:08/2012)</string>
+     <string name="contact">"Liên hệ: lamphucduy@gmail.com"</string>
+    <string name="delete">Xóa</string>
+    <string name="rename">Đổi tên</string>
+    <string name="cut">Cắt</string>
+    <string name="close">Đóng</string>
+    <string name="cancel">Bỏ qua</string>
+    <string name="paste">Dán</string>
+    <string name="copy">Sao chép</string>
+ 	<string name="about">Thông tin</string>
+    <string name="cant_rename">Không đổi được tên</string>
+    <string name="cant_open">Không mở được</string>
+	<string name="deleting">Xóa</string>
+	<string name="new_file">Tạo mới tập tin</string>
+	<string name="new_dir">Thư mục mới</string>
+</resources>

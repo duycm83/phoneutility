@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">よこそう</string>
+    <string name="app_name">Phone Utility</string>
+    <string name="version">""バージョン:1.0 (build:2012/09/02)</string>
+    <string name="contact">"連絡先: lamphucduy@gmail.com"</string>
+    <string name="delete">削除</string>
+    <string name="rename">名前の変更</string>
+    <string name="cut">切り取り</string>
+    <string name="paste">貼り付け</string>
+    <string name="cancel">キャンセル</string>
+    <string name="copy">コピー</string>
+    <string name="close">閉じる</string>
+    <string name="cant_rename">名前が変更出来ませんでした。</string>
+    <string name="cant_open">開きませんでした。</string>
+     <string name="about">情報</string>
+     <string name="deleting">削除</string>
+	<string name="new_file">ファイル新規</string>
+	<string name="new_dir">フォルダ新規</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="context_menu">
+        <item >名前の変更</item>
+        <item >切り取り</item>
+    </string-array>
+    
+</resources>

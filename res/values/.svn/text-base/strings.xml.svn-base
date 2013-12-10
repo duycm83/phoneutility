@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Welcome</string>
+    <string name="app_name">Phone Utility</string>
+    <string name="delete">Delete</string>
+    <string name="rename">Remane</string>
+    <string name="cut">Cut</string>
+    <string name="paste">Paste</string>
+    <string name="copy">Copy</string>
+    <string name="about">About</string>
+    <string name="cant_rename">"can't rename"</string>
+    <string name="cant_open">"Can't open"</string>
+	<string name="deleting">Deleting</string>
+	<string name="new_file">New File</string>
+	<string name="new_dir">New Folder</string>
+</resources>

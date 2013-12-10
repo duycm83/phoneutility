@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/itemDelete"
+        android:icon="@drawable/ic_menu_delete"
+        android:title="@string/delete"/>
+    <item
+        android:id="@+id/itemMove"
+        android:icon="@drawable/ic_menu_cut"
+        android:title="@string/cut"/>
+    <item
+        android:id="@+id/itemNewFile"
+        android:icon="@drawable/ic_menu_add"
+        android:title="@string/new_file"/>
+    <item
+        android:id="@+id/itemAbout"
+        android:icon="@drawable/ic_menu_help"
+        android:title="@string/about"/>
+
+</menu>
