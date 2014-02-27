@@ -30,5 +30,11 @@
         android:id="@+id/itemAbout"
         android:icon="@drawable/ic_menu_help"
         android:title="@string/about"/>
+    
+    <item android:id="@+id/itemUp"
+        android:icon="@drawable/ic_arrow_up"
+        android:title="@string/up_dir"
+        android:showAsAction="always"
+        android:onClick="upToParentDir"/>
 
 </menu>

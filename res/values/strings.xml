@@ -18,4 +18,5 @@
 	<string name="deleting">Deleting</string>
 	<string name="new_file">New File</string>
 	<string name="new_dir">New Folder</string>
+	<string name="up_dir">Upper</string>
 </resources>

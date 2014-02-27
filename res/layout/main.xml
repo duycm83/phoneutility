@@ -7,18 +7,11 @@
     <LinearLayout
         android:id="@+id/upDir"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@android:drawable/list_selector_background"
         android:onClick="upToParentDir"
         android:orientation="horizontal" 
         android:layout_alignParentTop="true">
-
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_up" />
-
         <TextView
             android:id="@+id/tvCurrentDir"
             android:layout_width="fill_parent"

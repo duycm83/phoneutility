@@ -18,4 +18,5 @@
 	<string name="deleting">Xóa</string>
 	<string name="new_file">Tạo mới tập tin</string>
 	<string name="new_dir">Thư mục mới</string>
+	<string name="up_dir">Tren</string>
 </resources>

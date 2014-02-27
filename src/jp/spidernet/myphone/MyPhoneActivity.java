@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Stack;
 
-import jp.spidernet.myphone.adlantis.AdlantisUtil;
 import jp.spidernet.myphone.tools.CommonDialogFactory;
 import jp.spidernet.myphone.tools.FileUtils;
 import jp.spidernet.myphone.tools.ISimpleListener;
@@ -64,7 +63,7 @@ public class MyPhoneActivity extends Activity {
 		Utility.getLocationInfo(getBaseContext());
 		// accessRoot();
 		mTvCurrentDir = (TextView) findViewById(R.id.tvCurrentDir);
-		mTvCurrentDir.setText(mCurrentDir.getName());
+		mTvCurrentDir.setText(mCurrentDir.getAbsolutePath());
 		mListView = (ListView) findViewById(R.id.listView);
 		registerForContextMenu(mListView);
 		updateNewDir(mCurrentDir);
@@ -115,7 +114,7 @@ public class MyPhoneActivity extends Activity {
 		super.onResume();
 //		 Intent myStarterIntent = new Intent(this, StartUpService.class);
 //		 startService(myStarterIntent);
-		 AdlantisUtil.startAtlantis(this);
+//		 AdlantisUtil.startAtlantis(this);
 
 		Intent intent = getIntent();
 		Log.d(TAG, "intent: " + intent);
@@ -366,8 +365,8 @@ public class MyPhoneActivity extends Activity {
 		}
 		return true;
 	}
-
-	public void upToParentDir(View v) {
+	
+	public void upToParentDir(MenuItem v) {
 		File upDir = mCurrentDir.getParentFile();
 		if (upDir != null) {
 			updateNewDir(upDir);
@@ -383,7 +382,7 @@ public class MyPhoneActivity extends Activity {
 		mFilesListAdapter = new FileListAdapter(MyPhoneActivity.this,
 				R.layout.listitem, mListFiles);
 		mListView.setAdapter(mFilesListAdapter);
-		mTvCurrentDir.setText(mCurrentDir.getName());
+		mTvCurrentDir.setText(mCurrentDir.getAbsolutePath());
 	}
 
 	@SuppressWarnings("unused")
