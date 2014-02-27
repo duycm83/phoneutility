@@ -132,7 +132,10 @@ public class MyPhoneActivity extends Activity {
 		if (SDDIR.getName().equals(name)) {
 			super.onBackPressed();
 		} else {
-			upToParentDir(null);
+			File newDir = upToParentDir(null);
+			if (newDir == null) {
+				super.onBackPressed();
+			}
 		}
 		clearCheckedItem();
 	}
@@ -366,13 +369,14 @@ public class MyPhoneActivity extends Activity {
 		return true;
 	}
 	
-	public void upToParentDir(MenuItem v) {
+	public File upToParentDir(MenuItem v) {
 		File upDir = mCurrentDir.getParentFile();
 		if (upDir != null) {
 			updateNewDir(upDir);
 			if (!mSelectedPosStack.isEmpty())
 				mListView.setSelection(mSelectedPosStack.pop());
 		}
+		return upDir;
 	}
 
 	private void updateNewDir(File newFileDir) {
