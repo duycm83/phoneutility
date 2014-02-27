@@ -51,8 +51,9 @@ public class MyPhoneActivity extends Activity {
 	private TextView mTvCurrentDir = null;
 	private Stack<Integer> mSelectedPosStack = new Stack<Integer>();
 	private FileListAdapter mFilesListAdapter = null;
-	private ArrayList<File> mCutFilesList = null;
-	private ArrayList<File> mCopyFilesList = null;
+	private ArrayList<File> mCutFilesList =  new ArrayList<File>();
+	private ArrayList<File> mCopyFilesList =  new ArrayList<File>();
+	private Menu mMenu = null;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -167,33 +168,34 @@ public class MyPhoneActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.options, menu);
-		return super.onCreateOptionsMenu(menu);
+		menuInflater.inflate(R.menu.main_menu, menu);
+		this.mMenu = menu;
+		return true;
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (mCheckedFilesList.size() > 0) {
-			if (mCutFilesList != null && mCutFilesList.size() > 0) {
-				menu.findItem(R.id.itemCut).setTitle(R.string.paste);
-				menu.findItem(R.id.itemCut).setIcon(
-						R.drawable.ic_menu_paste_holo_dark);
-			} else {
-				menu.findItem(R.id.itemCut).setTitle(R.string.cut);
-				menu.findItem(R.id.itemCut).setIcon(R.drawable.ic_menu_cut);
-				menu.findItem(R.id.itemCopy).setTitle(R.string.copy);
-				menu.findItem(R.id.itemCopy).setIcon(R.drawable.ic_menu_copy);
-			}
-			menu.findItem(R.id.itemDelete).setVisible(true);
-			menu.findItem(R.id.itemCut).setVisible(true);
-			menu.findItem(R.id.itemCopy).setVisible(true);
-			menu.findItem(R.id.itemCancel).setVisible(true);
-		} else {
-			menu.findItem(R.id.itemDelete).setVisible(false);
-			menu.findItem(R.id.itemCut).setVisible(false);
-			menu.findItem(R.id.itemCopy).setVisible(false);
-			menu.findItem(R.id.itemCancel).setVisible(false);
-		}
+//		if (mCheckedFilesList.size() > 0) {
+//			if (mCutFilesList != null && mCutFilesList.size() > 0) {
+//				menu.findItem(R.id.itemCut).setTitle(R.string.paste);
+//				menu.findItem(R.id.itemCut).setIcon(
+//						R.drawable.ic_menu_paste_holo_dark);
+//			} else {
+//				menu.findItem(R.id.itemCut).setTitle(R.string.cut);
+//				menu.findItem(R.id.itemCut).setIcon(R.drawable.ic_menu_cut);
+//				menu.findItem(R.id.itemCopy).setTitle(R.string.copy);
+//				menu.findItem(R.id.itemCopy).setIcon(R.drawable.ic_menu_copy);
+//			}
+//			menu.findItem(R.id.itemDelete).setVisible(true);
+//			menu.findItem(R.id.itemCut).setVisible(true);
+//			menu.findItem(R.id.itemCopy).setVisible(true);
+//			menu.findItem(R.id.itemCancel).setVisible(true);
+//		} else {
+//			menu.findItem(R.id.itemDelete).setVisible(false);
+//			menu.findItem(R.id.itemCut).setVisible(false);
+//			menu.findItem(R.id.itemCopy).setVisible(false);
+//			menu.findItem(R.id.itemCancel).setVisible(false);
+//		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -220,22 +222,29 @@ public class MyPhoneActivity extends Activity {
 			break;
 		case R.id.itemCut:
 			mCutFilesList = (ArrayList<File>) mCheckedFilesList.clone();
+			changeToMenuCut();
 			break;
 		case R.id.itemCopy:
 			mCopyFilesList = (ArrayList<File>) mCheckedFilesList.clone();
+			changeToMenuCopy();
 			break;
-		case R.id.itemPaste:
+		case R.id.itemMove:
 			if (mCutFilesList != null && mCutFilesList.size() > 0) {
 				Utility.move(mCutFilesList, mCurrentDir);
 				updateNewDir(mCurrentDir);
 				mCutFilesList.clear();
 				mCheckedFilesList.clear();
-			} else if (mCopyFilesList != null && mCopyFilesList.size() > 0) {
+			}
+			changeToMenuMain();
+			break;
+		case R.id.itemPaste:
+			if (mCopyFilesList != null && mCopyFilesList.size() > 0) {
 				Utility.copy(mCopyFilesList, mCurrentDir);
 				updateNewDir(mCurrentDir);
 				mCopyFilesList.clear();
 				mCheckedFilesList.clear();
 			}
+			changeToMenuMain();
 			break;
 		case R.id.itemAbout:
 			// Intent intent = new Intent(this, AboutActivity.class);
@@ -275,6 +284,7 @@ public class MyPhoneActivity extends Activity {
 			break;
 		case R.id.itemCancel:
 			clearCheckedItem();
+			onMenuEditMode(null);
 			break;
 		default:
 			break;
@@ -285,10 +295,15 @@ public class MyPhoneActivity extends Activity {
 
 	private void clearCheckedItem() {
 		mCheckedFilesList.clear();
-		if (mCutFilesList != null)
+		if (mCutFilesList != null) {
 			mCutFilesList.clear();
-		if (mFilesListAdapter != null)
+		}
+		if (mCopyFilesList != null) {
+			mCopyFilesList.clear();
+		}
+		if (mFilesListAdapter != null) {
 			mFilesListAdapter.clearCheckedView();
+		}
 	}
 
 	@Override
@@ -387,6 +402,7 @@ public class MyPhoneActivity extends Activity {
 				R.layout.listitem, mListFiles);
 		mListView.setAdapter(mFilesListAdapter);
 		mTvCurrentDir.setText(mCurrentDir.getAbsolutePath());
+		onMenuEditMode(null);
 	}
 
 	@SuppressWarnings("unused")
@@ -442,5 +458,40 @@ public class MyPhoneActivity extends Activity {
 		super.onDestroy();
 		unregisterReceiver(deviceAtatchReceiver);
 	};
-
+	
+	public void onMenuEditMode(View view) {
+		if (this.mMenu == null) {
+			return;
+		} else {
+			if (mCheckedFilesList.size() > 0) {
+				this.mMenu.clear();
+				MenuInflater menuInflater = getMenuInflater();
+				menuInflater.inflate(R.menu.edit_select_menu, this.mMenu);
+			} else if (mCopyFilesList.size() > 0 || mCutFilesList.size() > 0) {
+				//何もしない
+			} else {
+				this.mMenu.clear();
+				MenuInflater menuInflater = getMenuInflater();
+				menuInflater.inflate(R.menu.main_menu, this.mMenu);
+			}
+		}
+	}
+	
+	private void changeToMenuCopy() {
+		this.mMenu.clear();
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.edit_copy_menu, this.mMenu);
+	}
+	
+	private void changeToMenuCut() {
+		this.mMenu.clear();
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.edit_move_menu, this.mMenu);
+	}
+	
+	private void changeToMenuMain() {
+		this.mMenu.clear();
+		MenuInflater menuInflater = getMenuInflater();
+		menuInflater.inflate(R.menu.main_menu, this.mMenu);
+	}
 }

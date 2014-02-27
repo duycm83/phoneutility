@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/itemMove"
+        android:icon="@drawable/ic_menu_move"
+        android:title="@string/move"
+        android:showAsAction="always"/>
+     <item
+        android:id="@+id/itemCancel"
+        android:icon="@drawable/ic_menu_clear_playlist"
+        android:title="@string/cancel"/>
+
+</menu>

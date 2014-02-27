@@ -8,6 +8,7 @@
     <string name="delete">Delete</string>
     <string name="rename">Remane</string>
     <string name="cut">Cut</string>
+    <string name="move">Move to here</string>
     <string name="paste">Paste</string>
     <string name="cancel">Cancel</string>
     <string name="copy">Copy</string>

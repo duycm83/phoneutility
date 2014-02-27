@@ -11,7 +11,7 @@
         android:scaleType="fitXY"
         android:src="@drawable/ic_empty_folder" />
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical" >
@@ -33,6 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:focusable="false"
-        android:focusableInTouchMode="true" />
+        android:focusableInTouchMode="true"
+        android:onClick="onMenuEditMode" />
 
 </LinearLayout>
