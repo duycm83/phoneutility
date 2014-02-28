@@ -15,16 +15,16 @@
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:theme="@android:style/Theme.DeviceDefault"
          >
         <meta-data
             android:name="Adlantis_Publisher_ID"
             android:value="MTMwODU%3D%0A" />
 
         <activity
-            android:name=".MyPhoneActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.DeviceDefault">"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,6 +37,10 @@
              <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
             android:resource="@xml/device_filter" />
          -->
+        </activity>
+        <activity
+            android:name=".EditActivity"
+            android:configChanges="orientation|keyboardHidden">
         </activity>
         <activity
             android:name=".AboutActivity"

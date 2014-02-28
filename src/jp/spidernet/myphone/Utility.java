@@ -1,11 +1,9 @@
 package jp.spidernet.myphone;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import jp.spidernet.myphone.tools.FileUtils;
@@ -186,10 +184,28 @@ public class Utility {
 		}
 	}
 	
+	public static void move(String[] filesArray, File toDir) {
+		ArrayList<File> fromFiles = new ArrayList<File>();
+		for (String filePath : filesArray) {
+			File file = new File(filePath);
+			fromFiles.add(file);
+		}
+		move(fromFiles, toDir);
+	}
+	
 	public static void copy(ArrayList<File> fromFiles, File toDir) {
 		for (File file : fromFiles) {
 			FileUtils.copyDirectory(file, toDir);
 		}
+	}
+	
+	public static void copy(String[] filesArray, File toDir) {
+		ArrayList<File> fromFiles = new ArrayList<File>();
+		for (String filePath : filesArray) {
+			File file = new File(filePath);
+			fromFiles.add(file);
+		}
+		copy(fromFiles, toDir);
 	}
 	public static void getSensorInfo(Context context) {
 		// Sensor

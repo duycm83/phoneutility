@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 
 import android.util.Log;
@@ -58,7 +60,8 @@ public class FileUtils {
 
 	public static void copyDirectory(File fromFile, File toDir) {
 		try {
-			copyTransfer(fromFile.getAbsolutePath(), toDir.getAbsolutePath());
+//			copyTransfer(fromFile.getAbsolutePath(), toDir.getAbsolutePath());
+			copyDirectoryOneLocationToAnotherLocation(fromFile, toDir);
 		} catch (IOException e) {
 			Log.e(TAG, "copyDirectory FAILED", e);
 		}
@@ -74,5 +77,40 @@ public class FileUtils {
 		boolean result = fromFile.renameTo(new File(toDir.getPath(), fromFile.getName()));
 		return result;
 	}
+	
+	public static void copyDirectoryOneLocationToAnotherLocation(File sourceLocation, File targetLocation)
+	        throws IOException {
+
+	    if (sourceLocation.isDirectory()) {
+	        if (!targetLocation.exists()) {
+	            targetLocation.mkdir();
+	        }
+
+	        String[] children = sourceLocation.list();
+	        for (int i = 0; i < sourceLocation.listFiles().length; i++) {
+
+	            copyDirectoryOneLocationToAnotherLocation(new File(sourceLocation, children[i]),
+	                    new File(targetLocation, children[i]));
+	        }
+	    } else {
+
+	        InputStream in = new FileInputStream(sourceLocation);
+	        if (targetLocation.isDirectory()) {
+	        	targetLocation = new File(targetLocation.getAbsolutePath(), sourceLocation.getName());
+	        }
+	        OutputStream out = new FileOutputStream(targetLocation);
+
+	        // Copy the bits from instream to outstream
+	        byte[] buf = new byte[1024];
+	        int len;
+	        while ((len = in.read(buf)) > 0) {
+	            out.write(buf, 0, len);
+	        }
+	        in.close();
+	        out.close();
+	    }
+
+	}
+	
 
 }

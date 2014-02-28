@@ -23,10 +23,10 @@ import android.widget.TextView;
 
 public class FileListAdapter extends ArrayAdapter<File> {
 	private ArrayList<File> mFiles = null;
-	private MyPhoneActivity mActivity;
+	private MainActivity mActivity;
 	private HashMap<String, Boolean> mCheckedMap = null;
 	private ArrayList<CompoundButton> mCheckedView = null;
-	public FileListAdapter(MyPhoneActivity activity, int layoutId,
+	public FileListAdapter(MainActivity activity, int layoutId,
 			ArrayList<File> files) {
 		super(activity, layoutId, files);
 		mFiles = files;

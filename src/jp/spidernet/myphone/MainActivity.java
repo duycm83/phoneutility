@@ -40,17 +40,22 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MyPhoneActivity extends Activity {
-	private static final String TAG = MyPhoneActivity.class.getSimpleName();
+public class MainActivity extends Activity {
+	private static final String TAG = MainActivity.class.getSimpleName();
 	private static final int DIALOG_ABOUT_ID = 1;
+	public static final int EDIT_MODE_CUT = 1;
+	public static final int EDIT_MODE_COPY = 2;
+	public static final String EXTRA_FILE_LIST = "files_list";
+	public static final String EXTRA_EDIT_MODE = "edit_mode";
 	private ListView mListView = null;
-	private File SDDIR = Environment.getExternalStorageDirectory();
-	private File mCurrentDir = SDDIR;
+	protected File SDDIR = Environment.getExternalStorageDirectory();
+	protected File mCurrentDir = SDDIR;
 	private ArrayList<File> mListFiles;
-	private ArrayList<File> mCheckedFilesList = new ArrayList<File>();
 	private TextView mTvCurrentDir = null;
-	private Stack<Integer> mSelectedPosStack = new Stack<Integer>();
+	protected Stack<Integer> mSelectedPosStack = new Stack<Integer>();
 	private FileListAdapter mFilesListAdapter = null;
+	
+	private ArrayList<File> mCheckedFilesList = new ArrayList<File>();
 	private ArrayList<File> mCutFilesList =  new ArrayList<File>();
 	private ArrayList<File> mCopyFilesList =  new ArrayList<File>();
 	private Menu mMenu = null;
@@ -219,32 +224,13 @@ public class MyPhoneActivity extends Activity {
 					mFilesListAdapter.notifyDataSetChanged();
 				}
 			}
+			changeToMenuMain();
 			break;
 		case R.id.itemCut:
-			mCutFilesList = (ArrayList<File>) mCheckedFilesList.clone();
-			changeToMenuCut();
+			startEditMode(EDIT_MODE_CUT, mCheckedFilesList);
 			break;
 		case R.id.itemCopy:
-			mCopyFilesList = (ArrayList<File>) mCheckedFilesList.clone();
-			changeToMenuCopy();
-			break;
-		case R.id.itemMove:
-			if (mCutFilesList != null && mCutFilesList.size() > 0) {
-				Utility.move(mCutFilesList, mCurrentDir);
-				updateNewDir(mCurrentDir);
-				mCutFilesList.clear();
-				mCheckedFilesList.clear();
-			}
-			changeToMenuMain();
-			break;
-		case R.id.itemPaste:
-			if (mCopyFilesList != null && mCopyFilesList.size() > 0) {
-				Utility.copy(mCopyFilesList, mCurrentDir);
-				updateNewDir(mCurrentDir);
-				mCopyFilesList.clear();
-				mCheckedFilesList.clear();
-			}
-			changeToMenuMain();
+			startEditMode(EDIT_MODE_COPY, mCheckedFilesList);
 			break;
 		case R.id.itemAbout:
 			// Intent intent = new Intent(this, AboutActivity.class);
@@ -334,7 +320,7 @@ public class MyPhoneActivity extends Activity {
 		int menuItemIndex = item.getItemId();
 		if (menuItemIndex == 0) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			final EditText editText = new EditText(MyPhoneActivity.this);
+			final EditText editText = new EditText(MainActivity.this);
 			editText.setText(mListFiles.get(info.position).getName());
 			builder.setMessage("Are you sure you want to change file?")
 					.setView(editText)
@@ -398,17 +384,10 @@ public class MyPhoneActivity extends Activity {
 		mCurrentDir = newFileDir;
 		mListFiles = Utility.makeFilesArrayList(mCurrentDir.listFiles());
 		Utility.sortFilesList(mListFiles);
-		mFilesListAdapter = new FileListAdapter(MyPhoneActivity.this,
+		mFilesListAdapter = new FileListAdapter(MainActivity.this,
 				R.layout.listitem, mListFiles);
 		mListView.setAdapter(mFilesListAdapter);
 		mTvCurrentDir.setText(mCurrentDir.getAbsolutePath());
-		onMenuEditMode(null);
-	}
-
-	@SuppressWarnings("unused")
-	@Deprecated
-	private ArrayList<File> getCheckedFilesList() {
-		return mCheckedFilesList;
 	}
 
 	public void addToCheckedFilesList(File file) {
@@ -459,6 +438,22 @@ public class MyPhoneActivity extends Activity {
 		unregisterReceiver(deviceAtatchReceiver);
 	};
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_CANCELED) {
+			clearCheckedItem();
+			changeToMenuMain();
+			if (data != null) {
+				String currentDir = data.getStringExtra(EditActivity.CURRENT_DIR);
+				if (currentDir != null) {
+					mCurrentDir = new File(currentDir);
+					updateNewDir(mCurrentDir);
+				}
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
 	public void onMenuEditMode(View view) {
 		if (this.mMenu == null) {
 			return;
@@ -477,21 +472,25 @@ public class MyPhoneActivity extends Activity {
 		}
 	}
 	
-	private void changeToMenuCopy() {
-		this.mMenu.clear();
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.edit_copy_menu, this.mMenu);
-	}
-	
-	private void changeToMenuCut() {
-		this.mMenu.clear();
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.edit_move_menu, this.mMenu);
-	}
-	
 	private void changeToMenuMain() {
-		this.mMenu.clear();
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.main_menu, this.mMenu);
+		if (this.mMenu != null) {
+			this.mMenu.clear();
+			MenuInflater menuInflater = getMenuInflater();
+			menuInflater.inflate(R.menu.main_menu, this.mMenu);
+		}
+	}
+	
+	private void startEditMode(int editMode, ArrayList<File> checkedList) {
+		int size = checkedList.size();
+		String[] filesList = new String[size];
+		for (int i = 0; i < size; i++) {
+			File file = checkedList.get(i);
+			filesList[i] = file.getAbsolutePath();
+		}
+		
+		Intent intent = new Intent(this, EditActivity.class);
+		intent.putExtra(EXTRA_FILE_LIST, filesList);
+		intent.putExtra(EXTRA_EDIT_MODE, editMode);
+		startActivityForResult(intent, editMode);
 	}
 }
