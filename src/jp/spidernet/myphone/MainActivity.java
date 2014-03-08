@@ -77,6 +77,7 @@ public class MainActivity extends Activity {
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View view, int pos,
 					long id) {
+				changeToMenuMain();
 				File selectFile = mListFiles.get(pos);
 				if (!selectFile.canRead()) {
 					Toast.makeText(getBaseContext(),
@@ -144,6 +145,7 @@ public class MainActivity extends Activity {
 			}
 		}
 		clearCheckedItem();
+		changeToMenuMain();
 	}
 
 	@Override
