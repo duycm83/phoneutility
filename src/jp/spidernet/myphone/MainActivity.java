@@ -243,7 +243,7 @@ public class MainActivity extends Activity {
 			CommonDialogFactory.make1(this, getString(R.string.new_file),
 					new ISimpleListener() {
 						public void onClick(String... params) {
-							File file = new File(params[0]);
+							File file = new File(mCurrentDir, params[0]+".txt");
 							if (!file.exists()) {
 								try {
 									boolean result = file.createNewFile();
@@ -259,7 +259,7 @@ public class MainActivity extends Activity {
 						}
 					}, new ISimpleListener() {
 						public void onClick(String... params) {
-							File file = new File(params[0]);
+							File file = new File(mCurrentDir,params[0]);
 							if (!file.exists()) {
 								boolean result = file.mkdir();
 								if (result) {
