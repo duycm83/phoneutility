@@ -3,7 +3,7 @@
 
     <string name="hello">よこそう</string>
     <string name="app_name">Phone Utility</string>
-    <string name="version">""バージョン:1.0 (build:2012/09/02)</string>
+    <string name="version">""バージョン:2.0 (build:2014/03/08)</string>
     <string name="contact">"連絡先: lamphucduy@gmail.com"</string>
     <string name="delete">削除</string>
     <string name="rename">名前の変更</string>

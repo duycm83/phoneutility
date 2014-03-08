@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import jp.spidernet.myphone.tools.CommonDialogFactory;
 import jp.spidernet.myphone.tools.ISimpleListener;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -157,22 +159,8 @@ public class EditActivity extends MainActivity {
 		int id = item.getItemId();
 		switch (id) {
 		case R.id.itemMove:
-			if (mFilesList.length > 0) {
-				Utility.move(mFilesList, mCurrentDir);
-				updateNewDir(mCurrentDir);
-			}
-			data.putExtra(CURRENT_DIR, mCurrentDir.getAbsolutePath());
-			setResult(RESULT_CANCELED);
-			finish();
-			break;
 		case R.id.itemPaste:
-			if (mFilesList.length > 0) {
-				Utility.copy(mFilesList, mCurrentDir);
-				updateNewDir(mCurrentDir);
-			}
-			data.putExtra(CURRENT_DIR, mCurrentDir.getAbsolutePath());
-			setResult(RESULT_CANCELED);
-			finish();
+			new EditAsyncTask(mFilesList, mCurrentDir).execute(mEditMode);
 			break;
 		case R.id.itemAbout:
 			// Intent intent = new Intent(this, AboutActivity.class);
@@ -277,6 +265,53 @@ public class EditActivity extends MainActivity {
 				MenuInflater menuInflater = getMenuInflater();
 				menuInflater.inflate(R.menu.main_menu, this.mMenu);
 			}
+		}
+	}
+	
+	private class EditAsyncTask extends AsyncTask<Integer, Integer, Boolean> {
+		private String[] filesList = null;
+		private File currentDir = null;
+		private ProgressDialog progressDialog = null;
+		
+		public EditAsyncTask(String[] filesList, File currentDir) {
+			this.filesList = filesList;
+			this.currentDir = currentDir;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			progressDialog = new ProgressDialog(EditActivity.this);
+			progressDialog.setMessage("process...");
+			progressDialog.show();
+			super.onPreExecute();
+		}
+		
+		@Override
+		protected Boolean doInBackground(Integer... params) {
+			boolean result = false;
+			int editMode = params[0];
+			if (editMode == MainActivity.EDIT_MODE_CUT) {
+				if (mFilesList.length > 0) {
+					Utility.move(mFilesList, mCurrentDir);
+				}
+				
+			} else if (editMode == MainActivity.EDIT_MODE_COPY) {
+				if (mFilesList.length > 0) {
+					Utility.copy(mFilesList, mCurrentDir);
+				}
+				
+			}
+			return result;
+		}
+		
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			progressDialog.cancel();
+			Intent data = new Intent();
+			data.putExtra(CURRENT_DIR, mCurrentDir.getAbsolutePath());
+			setResult(RESULT_CANCELED, data);
+			finish();
 		}
 	}
 }

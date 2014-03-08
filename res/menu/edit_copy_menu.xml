@@ -9,6 +9,13 @@
      <item
         android:id="@+id/itemCancel"
         android:icon="@drawable/ic_menu_clear_playlist"
-        android:title="@string/cancel"/>
+        android:title="@string/cancel"
+        android:showAsAction="always"/>
+     
+     <item android:id="@+id/itemUp"
+        android:icon="@drawable/ic_arrow_up"
+        android:title="@string/up_dir"
+        android:showAsAction="always"
+        android:onClick="upToParentDir"/>
 
 </menu>

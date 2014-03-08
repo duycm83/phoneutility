@@ -306,10 +306,10 @@ public class MainActivity extends Activity {
 			// menu.add(info.position, i, i, menuItems[i]);
 			// }
 			menu.add(info.position, 0, 0, R.string.rename);
-			if (mCutFilesList == null)
-				menu.add(info.position, 1, 1, R.string.cut);
-			else
-				menu.add(info.position, 1, 1, R.string.paste);
+//			if (mCutFilesList == null)
+//				menu.add(info.position, 1, 1, R.string.cut);
+//			else
+//				menu.add(info.position, 1, 1, R.string.paste);
 		}
 	}
 
