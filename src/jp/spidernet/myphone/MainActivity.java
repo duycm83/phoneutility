@@ -144,7 +144,7 @@ public class MainActivity extends Activity {
 				super.onBackPressed();
 			}
 		}
-		clearCheckedItem();
+		
 		changeToMenuMain();
 	}
 
@@ -475,6 +475,7 @@ public class MainActivity extends Activity {
 	}
 	
 	private void changeToMenuMain() {
+		clearCheckedItem();
 		if (this.mMenu != null) {
 			this.mMenu.clear();
 			MenuInflater menuInflater = getMenuInflater();
