@@ -14,14 +14,18 @@ import jp.spidernet.myphone.tools.ISimpleListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -43,6 +47,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 	private static final String TAG = MainActivity.class.getSimpleName();
 	private static final int DIALOG_ABOUT_ID = 1;
+	private static final int DIALOG_DELETE_ID = 2;
 	public static final int EDIT_MODE_CUT = 1;
 	public static final int EDIT_MODE_COPY = 2;
 	public static final String EXTRA_FILE_LIST = "files_list";
@@ -65,6 +70,13 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+		    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		} else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+		    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		} else {
+		    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		}
 		// Utility.getSensorInfo(getBaseContext());
 		Utility.getLocationInfo(getBaseContext());
 		// accessRoot();
@@ -158,18 +170,49 @@ public class MainActivity extends Activity {
 			dialog.setContentView(R.layout.about);
 			dialog.setTitle(R.string.app_name);
 			dialog.findViewById(R.id.close).setOnClickListener(
-					new OnClickListener() {
-						public void onClick(View arg0) {
-							dismissDialog(DIALOG_ABOUT_ID);
-						}
-					});
+				new OnClickListener() {
+					public void onClick(View arg0) {
+						dismissDialog(DIALOG_ABOUT_ID);
+					}
+			});
 			break;
+		case DIALOG_DELETE_ID:
+			// 1. Instantiate an AlertDialog.Builder with its constructor
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+			// 2. Chain together various setter methods to set the dialog characteristics
+			builder.setMessage(R.string.delete_confirm)
+			.setTitle(R.string.delete_file_confirm_title);
+			// Add the buttons
+			builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+					deleteSelectedFiles();
+				}
+			});
+			builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+					changeToMenuMain();
+				}
+			});
+
+			// 3. Get the AlertDialog from create()
+			dialog = builder.create();
+			
+			break;
 		default:
 			dialog = super.onCreateDialog(id);
 			break;
 		}
 		return dialog;
+	}
+
+	protected void deleteSelectedFiles() {
+		if (mCheckedFilesList != null) {
+			DeleteFileAsyncTask deleteFileAsyncTask = new DeleteFileAsyncTask();
+			deleteFileAsyncTask.execute();
+		}
 	}
 
 	@Override
@@ -211,22 +254,7 @@ public class MainActivity extends Activity {
 		int id = item.getItemId();
 		switch (id) {
 		case R.id.itemDelete:
-			if (mCheckedFilesList != null) {
-				for (File file : mCheckedFilesList) {
-					if (file.isDirectory()) {
-						try {
-							FileUtils.deleteRecursive(file);
-						} catch (FileNotFoundException e) {
-							e.printStackTrace();
-						}
-					} else {
-						file.delete();
-					}
-					mListFiles.remove(file);
-					mFilesListAdapter.notifyDataSetChanged();
-				}
-			}
-			changeToMenuMain();
+			showDialog(DIALOG_DELETE_ID);
 			break;
 		case R.id.itemCut:
 			startEditMode(EDIT_MODE_CUT, mCheckedFilesList);
@@ -496,4 +524,63 @@ public class MainActivity extends Activity {
 		intent.putExtra(EXTRA_EDIT_MODE, editMode);
 		startActivityForResult(intent, editMode);
 	}
+	
+	class DeleteFileAsyncTask extends AsyncTask<File, Integer, Boolean> {
+		ProgressDialog dialog = null;
+		
+		public DeleteFileAsyncTask() {
+		}
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			dialog = new ProgressDialog(MainActivity.this);
+			dialog.setTitle(R.string.delete_file_confirm_title);
+			dialog.setMessage(getString(R.string.deleting));
+			dialog.show();
+		}
+		
+		@Override
+		protected void onProgressUpdate(Integer... values) {
+			super.onProgressUpdate(values);
+		}
+		
+		/**
+		 * arrayfilesの引数は未使用
+		 */
+		@Override
+		protected Boolean doInBackground(File... arrayfiles) {
+			if (mCheckedFilesList != null) {
+				for (File file : mCheckedFilesList) {
+					if (file.isDirectory()) {
+						try {
+							if(FileUtils.deleteRecursive(file)) {
+								mListFiles.remove(file);
+							}
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						}
+					} else {
+						if (file.delete()) {
+							mListFiles.remove(file);
+						}
+					}
+				}
+			}
+			
+			
+		
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			if (dialog != null && dialog.isShowing()) {
+				dialog.cancel();
+			}
+			mFilesListAdapter.notifyDataSetChanged();
+			changeToMenuMain();
+			super.onPostExecute(result);
+		}
+	}
+
 }

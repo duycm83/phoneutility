@@ -20,4 +20,6 @@
 	<string name="new_file">Tạo mới tập tin</string>
 	<string name="new_dir">Thư mục mới</string>
 	<string name="up_dir">Tren</string>
+	<string name="delete_confirm">Bạn đã chọn xóa tập tin？</string>
+	<string name="delete_file_confirm_title">Xóa tập tin</string>
 </resources>

@@ -20,4 +20,6 @@
 	<string name="new_file">ファイル作成</string>
 	<string name="new_dir">フォルダ作成</string>
 	<string name="up_dir">上</string>
+	<string name="delete_confirm">ファイルを削除しますか？</string>
+	<string name="delete_file_confirm_title">ファイル削除</string>
 </resources>

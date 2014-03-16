@@ -20,4 +20,6 @@
 	<string name="new_file">New File</string>
 	<string name="new_dir">New Folder</string>
 	<string name="up_dir">Upper</string>
+	<string name="delete_confirm">Are you sure to delete file(s)?</string>
+	<string name="delete_file_confirm_title">File(s) Delete</string>
 </resources>
