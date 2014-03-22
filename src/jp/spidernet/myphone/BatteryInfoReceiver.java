@@ -8,7 +8,7 @@ import android.os.BatteryManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-class BatteryInfoReceiver extends BroadcastReceiver {
+public class BatteryInfoReceiver extends BroadcastReceiver {
 	private static final String TAG = "BatteryInfoReceiver";
 
 	@Override
@@ -16,42 +16,42 @@ class BatteryInfoReceiver extends BroadcastReceiver {
 		Log.v(TAG, "onReceive was called");
 		String action = intent.getAction();
 		if (action.equals(Intent.ACTION_BATTERY_CHANGED)) {
-			// 充電状態の取得
+			// 蜈�崕迥ｶ諷九�蜿門ｾ�
 			String statusStr = "";
 			int status = intent.getIntExtra("status", 0);
 			if (status == BatteryManager.BATTERY_STATUS_CHARGING) {
-				statusStr = "充電中";
+				statusStr = "蜈�崕荳ｭ";
 			} else if (status == BatteryManager.BATTERY_STATUS_DISCHARGING) {
-				statusStr = "充電切断";
+				statusStr = "蜈�崕蛻�妙";
 			} else if (status == BatteryManager.BATTERY_STATUS_FULL) {
-				statusStr = "充電満タン";
+				statusStr = "蜈�崕貅�繧ｿ繝ｳ";
 			} else if (status == BatteryManager.BATTERY_STATUS_NOT_CHARGING) {
-				statusStr = "充電切断中";
+				statusStr = "蜈�崕蛻�妙荳ｭ";
 			} else if (status == BatteryManager.BATTERY_STATUS_UNKNOWN) {
-				statusStr = "不明";
+				statusStr = "荳肴�";
 			}
 
-			// プラグ種別の取得
+			// 繝励Λ繧ｰ遞ｮ蛻･縺ｮ蜿門ｾ�
 			String pluggedStr = "";
 			int plugged = intent.getIntExtra("plugged", 0);
 			if (plugged == BatteryManager.BATTERY_PLUGGED_AC) {
-				pluggedStr = "ACアダプタ";
+				pluggedStr = "AC繧｢繝�繝励ち";
 			} else if (plugged == BatteryManager.BATTERY_PLUGGED_USB) {
 				pluggedStr = "USB";
 			}
 
-			// バッテリー量の取得
+			// 繝舌ャ繝�Μ繝ｼ驥上�蜿門ｾ�
 			int level = intent.getIntExtra("level", 0);
 			int scale = intent.getIntExtra("scale", 0);
 			String batLevel = level + "%";
-			// 温度の取得
+			// 貂ｩ蠎ｦ縺ｮ蜿門ｾ�
 			int temperature = intent.getIntExtra("temperature", 0);
 
 			String str = "";
-			str += "充電状態:" + statusStr + "\n";
-			str += "プラグ種別:" + pluggedStr + "\n";
-			str += "バッテリー量:" + level + "/" + scale + "\n";
-			str += "温度:" + (temperature / 10) + "度\n";
+			str += "蜈�崕迥ｶ諷�:" + statusStr + "\n";
+			str += "繝励Λ繧ｰ遞ｮ蛻･:" + pluggedStr + "\n";
+			str += "繝舌ャ繝�Μ繝ｼ驥�:" + level + "/" + scale + "\n";
+			str += "貂ｩ蠎ｦ:" + (temperature / 10) + "蠎ｦ\n";
 			notifi(String.valueOf(batLevel), str, context);
 		}
 	}

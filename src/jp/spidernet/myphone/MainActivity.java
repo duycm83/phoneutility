@@ -48,6 +48,7 @@ public class MainActivity extends Activity {
 	private static final String TAG = MainActivity.class.getSimpleName();
 	private static final int DIALOG_ABOUT_ID = 1;
 	private static final int DIALOG_DELETE_ID = 2;
+	private static final int DIALOG_PLAY_SEARCH_TORRENT_ID = 3;
 	public static final int EDIT_MODE_CUT = 1;
 	public static final int EDIT_MODE_COPY = 2;
 	public static final String EXTRA_FILE_LIST = "files_list";
@@ -120,6 +121,8 @@ public class MainActivity extends Activity {
 						startActivity(intent);
 					} catch (Exception e) {
 						e.printStackTrace();
+						 if (Utility.MIME_TORRENT.equals(mimeType)) 
+							 showDialog(DIALOG_PLAY_SEARCH_TORRENT_ID);
 					}
 				} else {
 					mSelectedPosStack.push(pos);
@@ -169,6 +172,27 @@ public class MainActivity extends Activity {
 	protected Dialog onCreateDialog(int id) {
 		Dialog dialog = null;
 		switch (id) {
+		case DIALOG_PLAY_SEARCH_TORRENT_ID:
+			// 1. Instantiate an AlertDialog.Builder with its constructor
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			// 2. Chain together various setter methods to set the dialog characteristics
+			builder.setMessage(R.string.dialog_download_torrent_app_message)
+			// Add the buttons
+			.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+					Intent goToMarket = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://search?q=torrent"));
+					startActivity(goToMarket);
+				}
+			})
+			.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+				}
+			});
+			// 3. Get the AlertDialog from create()
+			dialog = builder.create();
+			break;
 		case DIALOG_ABOUT_ID:
 			dialog = new Dialog(this);
 
@@ -183,8 +207,7 @@ public class MainActivity extends Activity {
 			break;
 		case DIALOG_DELETE_ID:
 			// 1. Instantiate an AlertDialog.Builder with its constructor
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
+			builder = new AlertDialog.Builder(this);
 			// 2. Chain together various setter methods to set the dialog characteristics
 			builder.setMessage(R.string.delete_confirm)
 			.setTitle(R.string.delete_file_confirm_title);

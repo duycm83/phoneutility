@@ -23,4 +23,5 @@
 	<string name="delete_confirm">Are you sure to delete file(s)?</string>
 	<string name="delete_file_confirm_title">File(s) Delete</string>
 	<string name="rename_message">New file name</string>
+	<string name="dialog_download_torrent_app_message">Torrent Application is not installed. Would you start Play Store and install Torrent application？</string>
 </resources>

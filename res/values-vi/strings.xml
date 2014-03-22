@@ -23,4 +23,5 @@
 	<string name="delete_confirm">Bạn đã chọn xóa tập tin？</string>
 	<string name="delete_file_confirm_title">Xóa tập tin</string>
 	<string name="rename_message">Nhập tên mới</string>
+	<string name="dialog_download_torrent_app_message">Torrent chưa được cài đặt. Bạn có muốn mở Play Store và cài đặt chương trignh Torrent không？</string>
 </resources>
