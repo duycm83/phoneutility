@@ -31,9 +31,11 @@ public class Utility {
 	private static HashMap<String, Integer> iconsMap = null;
 	private static int THUMBNAIL_SIZE = 100;
 	public static final String TEXT_PLAIN  = "text/plain";
+	public static final String MIME_TORRENT  = "application/x-bittorrent";
 	public static final String MIME_TYPE_APK = "application/vnd.android.package-archive";
 	public static final String APK = "apk";
-	private static final int REPEATING_TIME = 10*60*1000; //10分
+	public static final String TORRENT = "torrent";
+	private static final int REPEATING_TIME = 10*60*1000; //10蛻�
 	
 	public static int getFileExtensionId(String fileName) {
 		String ext = getFileExtension(fileName);
@@ -81,6 +83,7 @@ public class Utility {
 			iconsMap.put("zip", R.drawable.ic_zip2);
 			iconsMap.put("mp4", R.drawable.ic_mp4);
 			iconsMap.put("apk", R.drawable.ic_apk);
+			iconsMap.put("torrent", R.drawable.ic_torrent);
 		}
 		Integer id = iconsMap.get(fileExtension.toLowerCase());
 		if (id == null)

@@ -22,4 +22,5 @@
 	<string name="up_dir">Tren</string>
 	<string name="delete_confirm">Bạn đã chọn xóa tập tin？</string>
 	<string name="delete_file_confirm_title">Xóa tập tin</string>
+	<string name="rename_message">Nhập tên mới</string>
 </resources>

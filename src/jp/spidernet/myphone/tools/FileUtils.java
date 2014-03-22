@@ -8,7 +8,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.os.Parcelable;
 import android.util.Log;
 
 public class FileUtils {
@@ -33,13 +40,13 @@ public class FileUtils {
     }
     
     /**
-     * コピー元のパス[srcPath]から、コピー先のパス[destPath]へ
-     * ファイルのコピーを行います。
-     * コピー処理にはFileChannel#transferToメソッドを利用します。
-     * 尚、コピー処理終了後、入力・出力のチャネルをクローズします。
-     * @param srcPath    コピー元のパス
-     * @param destPath    コピー先のパス
-     * @throws IOException    何らかの入出力処理例外が発生した場合
+     * 繧ｳ繝斐�蜈��繝代せ[srcPath]縺九ｉ縲√さ繝斐�蜈医�繝代せ[destPath]縺ｸ
+     * 繝輔ぃ繧､繝ｫ縺ｮ繧ｳ繝斐�繧定｡後＞縺ｾ縺吶��
+     * 繧ｳ繝斐�蜃ｦ逅�↓縺ｯFileChannel#transferTo繝｡繧ｽ繝�ラ繧貞茜逕ｨ縺励∪縺吶��
+     * 蟆壹�√さ繝斐�蜃ｦ逅�ｵゆｺ�ｾ後�∝�蜉帙�蜃ｺ蜉帙�繝√Ε繝阪Ν繧偵け繝ｭ繝ｼ繧ｺ縺励∪縺吶��
+     * @param srcPath    繧ｳ繝斐�蜈��繝代せ
+     * @param destPath    繧ｳ繝斐�蜈医�繝代せ
+     * @throws IOException    菴輔ｉ縺九�蜈･蜃ｺ蜉帛�逅�ｾ句､悶′逋ｺ逕溘＠縺溷�ｴ蜷�
      */
     public static void copyTransfer(String srcPath, String destPath) 
         throws IOException {
@@ -111,6 +118,5 @@ public class FileUtils {
 	    }
 
 	}
-	
 
 }

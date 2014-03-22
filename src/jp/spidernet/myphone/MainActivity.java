@@ -104,6 +104,11 @@ public class MainActivity extends Activity {
 					String mimeType = null;
 					if (Utility.APK.toLowerCase().equals(extension)) {
 						mimeType = Utility.MIME_TYPE_APK;
+					} else if (Utility.TORRENT.equals(extension)) {
+						mimeType = MimeTypeMap.getSingleton()
+								.getMimeTypeFromExtension(extension);
+						if (mimeType == null)
+						mimeType = Utility.MIME_TORRENT;
 					} else {
 						mimeType = MimeTypeMap.getSingleton()
 								.getMimeTypeFromExtension(extension);
@@ -352,7 +357,7 @@ public class MainActivity extends Activity {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			final EditText editText = new EditText(MainActivity.this);
 			editText.setText(mListFiles.get(info.position).getName());
-			builder.setMessage("Are you sure you want to change file?")
+			builder.setMessage(getString(R.string.rename_message))
 					.setView(editText)
 					.setCancelable(false)
 					.setPositiveButton(android.R.string.ok,
@@ -493,7 +498,7 @@ public class MainActivity extends Activity {
 				MenuInflater menuInflater = getMenuInflater();
 				menuInflater.inflate(R.menu.edit_select_menu, this.mMenu);
 			} else if (mCopyFilesList.size() > 0 || mCutFilesList.size() > 0) {
-				//何もしない
+				//菴輔ｂ縺励↑縺�
 			} else {
 				this.mMenu.clear();
 				MenuInflater menuInflater = getMenuInflater();
@@ -545,7 +550,7 @@ public class MainActivity extends Activity {
 		}
 		
 		/**
-		 * arrayfilesの引数は未使用
+		 * arrayfiles縺ｮ蠑墓焚縺ｯ譛ｪ菴ｿ逕ｨ
 		 */
 		@Override
 		protected Boolean doInBackground(File... arrayfiles) {
