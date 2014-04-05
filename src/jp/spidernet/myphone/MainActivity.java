@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Stack;
 
 import jp.spidernet.myphone.tools.CommonDialogFactory;
@@ -15,6 +16,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.app.SearchableInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -41,6 +44,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,12 +69,13 @@ public class MainActivity extends Activity {
 	private ArrayList<File> mCutFilesList =  new ArrayList<File>();
 	private ArrayList<File> mCopyFilesList =  new ArrayList<File>();
 	private Menu mMenu = null;
-
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
 		if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
 		    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		} else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -247,10 +252,12 @@ public class MainActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.main_menu, menu);
+		
 		this.mMenu = menu;
 		return true;
 	}
-
+	
+	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 //		if (mCheckedFilesList.size() > 0) {
@@ -329,6 +336,12 @@ public class MainActivity extends Activity {
 		case R.id.itemCancel:
 			clearCheckedItem();
 			onMenuEditMode(null);
+			break;
+		case R.id.itemSearch:
+			clearCheckedItem();
+			onMenuEditMode(null);
+			Intent intent = new Intent(this, SearchResultActivity.class);
+			startActivity(intent);
 			break;
 		default:
 			break;

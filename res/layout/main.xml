@@ -12,6 +12,7 @@
         android:onClick="upToParentDir"
         android:orientation="horizontal" 
         android:layout_alignParentTop="true">
+ 
         <TextView
             android:id="@+id/tvCurrentDir"
             android:layout_width="fill_parent"

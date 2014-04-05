@@ -4,7 +4,7 @@
     <string name="hello">Welcome</string>
     <string name="app_name">Phone Utility</string>
     <string name="version">Version:1.0 (build:03/2014)</string>
-     <string name="contact">"Contact: lamphucduy@gmail.com"</string>
+    <string name="contact">"Contact: lamphucduy@gmail.com"</string>
     <string name="delete">Delete</string>
     <string name="rename">Remane</string>
     <string name="cut">Cut</string>
@@ -16,12 +16,16 @@
     <string name="about">About</string>
     <string name="cant_rename">"can't rename"</string>
     <string name="cant_open">"Can't open"</string>
-	<string name="deleting">Deleting</string>
-	<string name="new_file">New File</string>
-	<string name="new_dir">New Folder</string>
-	<string name="up_dir">Upper</string>
-	<string name="delete_confirm">Are you sure to delete file(s)?</string>
-	<string name="delete_file_confirm_title">File(s) Delete</string>
-	<string name="rename_message">New file name</string>
-	<string name="dialog_download_torrent_app_message">Torrent Application is not installed. Would you start Play Store and install Torrent application？</string>
+    <string name="deleting">Deleting</string>
+    <string name="new_file">New File</string>
+    <string name="new_dir">New Folder</string>
+    <string name="up_dir">Upper</string>
+    <string name="delete_confirm">Are you sure to delete file(s)?</string>
+    <string name="delete_file_confirm_title">File(s) Delete</string>
+    <string name="rename_message">New file name</string>
+    <string name="dialog_download_torrent_app_message">Torrent Application is not installed. Would you start Play Store and install Torrent application？</string>
+    <string name="title_activity_search_result">SearchResultActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
 </resources>
