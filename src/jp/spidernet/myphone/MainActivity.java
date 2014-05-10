@@ -71,6 +71,7 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		setCloseFooter();
 		if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
 		    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		} else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -609,6 +610,16 @@ public class MainActivity extends Activity {
 			changeToMenuMain();
 			super.onPostExecute(result);
 		}
+	}
+	
+	protected void setCloseFooter() {
+		final View footer = findViewById(R.id.footer);
+		findViewById(R.id.button_close).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				footer.setVisibility(View.GONE);
+			}
+		});
 	}
 
 }

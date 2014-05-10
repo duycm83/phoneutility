@@ -42,7 +42,7 @@ public class EditActivity extends MainActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
+		setCloseFooter();
 		mEditMode = getIntent().getIntExtra(EXTRA_EDIT_MODE, 0);
 		mFilesList = getIntent().getStringArrayExtra(EXTRA_FILE_LIST);
 		if (mEditMode == 0 || mFilesList == null) {
