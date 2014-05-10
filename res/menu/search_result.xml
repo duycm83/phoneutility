@@ -1,10 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="jp.spidernet.myphone.SearchResultActivity" >
+<item
+        android:id="@+id/action_options"
+        android:icon="@drawable/ic_options"
+        android:showAsAction="always"/>
+    <item
+        android:id="@+id/action_search"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@android:drawable/ic_menu_search"
+        android:showAsAction="always"
+        android:title="Search"/>
+    
 
-   <item android:id="@+id/action_search"
-         android:title="Search"
-         android:icon="@android:drawable/ic_menu_search"
-         android:showAsAction="always"
-         android:actionViewClass="android.widget.SearchView"/>
 </menu>

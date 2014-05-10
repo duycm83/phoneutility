@@ -2,28 +2,35 @@ package jp.spidernet.myphone;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-public class SearchResultActivity extends Activity implements
+public class SearchResultActivity extends MainActivity implements
 		SearchView.OnQueryTextListener {
 	private SearchView mSearchView;
 	private TextView mStatusView;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search);
 		mStatusView = (TextView) findViewById(R.id.status_text);
+		mListView = (ListView) findViewById(R.id.listView);
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -36,7 +43,15 @@ public class SearchResultActivity extends Activity implements
 		// mSearchView.onActionViewExpanded();
 		return true;
 	}
-
+	
+	private void updateUpdateSearchResult() {
+		mListFiles = Utility.makeFilesArrayList(mCurrentDir.listFiles());
+		Utility.sortFilesList(mListFiles);
+		mFilesListAdapter = new FileListAdapter(SearchResultActivity.this,
+				R.layout.listitem, mListFiles);
+		mListView.setAdapter(mFilesListAdapter);
+	}
+	
 	private void setupSearchView(MenuItem searchItem) {
 
 		if (isAlwaysExpanded()) {

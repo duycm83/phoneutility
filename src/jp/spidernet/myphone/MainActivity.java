@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Stack;
 
 import jp.spidernet.myphone.tools.CommonDialogFactory;
@@ -16,8 +15,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.app.SearchableInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -44,7 +41,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,18 +53,18 @@ public class MainActivity extends Activity {
 	public static final int EDIT_MODE_COPY = 2;
 	public static final String EXTRA_FILE_LIST = "files_list";
 	public static final String EXTRA_EDIT_MODE = "edit_mode";
-	private ListView mListView = null;
+	protected ListView mListView = null;
 	protected File SDDIR = Environment.getExternalStorageDirectory();
 	protected File mCurrentDir = SDDIR;
-	private ArrayList<File> mListFiles;
-	private TextView mTvCurrentDir = null;
+	protected ArrayList<File> mListFiles;
+	protected TextView mTvCurrentDir = null;
 	protected Stack<Integer> mSelectedPosStack = new Stack<Integer>();
-	private FileListAdapter mFilesListAdapter = null;
+	protected FileListAdapter mFilesListAdapter = null;
 	
-	private ArrayList<File> mCheckedFilesList = new ArrayList<File>();
+	protected ArrayList<File> mCheckedFilesList = new ArrayList<File>();
 	private ArrayList<File> mCutFilesList =  new ArrayList<File>();
 	private ArrayList<File> mCopyFilesList =  new ArrayList<File>();
-	private Menu mMenu = null;
+	protected Menu mMenu = null;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -90,7 +86,34 @@ public class MainActivity extends Activity {
 		mTvCurrentDir.setText(mCurrentDir.getAbsolutePath());
 		mListView = (ListView) findViewById(R.id.listView);
 		registerForContextMenu(mListView);
+		
+		IntentFilter intentfilter = new IntentFilter();
+		intentfilter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+		intentfilter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
+		registerReceiver(deviceAtatchReceiver, intentfilter);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+//		 Intent myStarterIntent = new Intent(this, StartUpService.class);
+//		 startService(myStarterIntent);
+//		 AdlantisUtil.startAtlantis(this);
+		
 		updateNewDir(mCurrentDir);
+		setAdapter();
+
+		Intent intent = getIntent();
+		Log.d(TAG, "intent: " + intent);
+		String action = intent.getAction();
+
+		if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)) {
+			Log.v(TAG, action);
+			Toast.makeText(getBaseContext(), action, Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	protected void setAdapter() {
 		mListView.setAdapter(mFilesListAdapter);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View view, int pos,
@@ -135,27 +158,6 @@ public class MainActivity extends Activity {
 				}
 			}
 		});
-		IntentFilter intentfilter = new IntentFilter();
-		intentfilter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
-		intentfilter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-		registerReceiver(deviceAtatchReceiver, intentfilter);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-//		 Intent myStarterIntent = new Intent(this, StartUpService.class);
-//		 startService(myStarterIntent);
-//		 AdlantisUtil.startAtlantis(this);
-
-		Intent intent = getIntent();
-		Log.d(TAG, "intent: " + intent);
-		String action = intent.getAction();
-
-		if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)) {
-			Log.v(TAG, action);
-			Toast.makeText(getBaseContext(), action, Toast.LENGTH_SHORT).show();
-		}
 	}
 
 	@Override
@@ -260,27 +262,6 @@ public class MainActivity extends Activity {
 	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-//		if (mCheckedFilesList.size() > 0) {
-//			if (mCutFilesList != null && mCutFilesList.size() > 0) {
-//				menu.findItem(R.id.itemCut).setTitle(R.string.paste);
-//				menu.findItem(R.id.itemCut).setIcon(
-//						R.drawable.ic_menu_paste_holo_dark);
-//			} else {
-//				menu.findItem(R.id.itemCut).setTitle(R.string.cut);
-//				menu.findItem(R.id.itemCut).setIcon(R.drawable.ic_menu_cut);
-//				menu.findItem(R.id.itemCopy).setTitle(R.string.copy);
-//				menu.findItem(R.id.itemCopy).setIcon(R.drawable.ic_menu_copy);
-//			}
-//			menu.findItem(R.id.itemDelete).setVisible(true);
-//			menu.findItem(R.id.itemCut).setVisible(true);
-//			menu.findItem(R.id.itemCopy).setVisible(true);
-//			menu.findItem(R.id.itemCancel).setVisible(true);
-//		} else {
-//			menu.findItem(R.id.itemDelete).setVisible(false);
-//			menu.findItem(R.id.itemCut).setVisible(false);
-//			menu.findItem(R.id.itemCopy).setVisible(false);
-//			menu.findItem(R.id.itemCancel).setVisible(false);
-//		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
