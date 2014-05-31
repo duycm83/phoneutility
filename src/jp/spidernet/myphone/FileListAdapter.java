@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -76,12 +75,10 @@ public class FileListAdapter extends ArrayAdapter<File> {
 			} else {
 				ivIcon.setImageResource(R.drawable.ic_empty_folder);
 			}
-			
-			
-			info = String.format("%d Files  %d Folders", childFiles, childFolders);
+			info = mActivity.getString(R.string.numfiles_numfolders, childFiles, childFolders);
 			tvFileInfo.setText(info);
 		} else {
-			info = String.format("Size: %s Updated: %s", Utility.reportTraffic(fileSize),
+			info = mActivity.getString(R.string.file_details, Utility.reportTraffic(fileSize),
 					SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT)
 							.format(new Date(lastModified)));
 			tvFileInfo.setText(info);
@@ -146,7 +143,7 @@ public class FileListAdapter extends ArrayAdapter<File> {
 	public void clearCheckedView() {
 		int size = mCheckedView.size();
 		for (int i = 0; i < size; i++) {
-			//onCheckedChangedでリストアイテムが削除されているため、「0」からチェックを消す。
+			//onCheckedChanged縺ｧ繝ｪ繧ｹ繝医い繧､繝�Β縺悟炎髯､縺輔ｌ縺ｦ縺�ｋ縺溘ａ縲√��0縲阪°繧峨メ繧ｧ繝�け繧呈ｶ医☆縲�
 			mCheckedView.get(0).setChecked(false);
 		}
 	}

@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="@android:drawable/list_selector_background"
-        android:onClick="upToParentDir"
         android:orientation="horizontal" >
         <TextView
             android:id="@+id/tvCurrentDir"

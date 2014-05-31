@@ -162,7 +162,10 @@ public class MainActivity extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		String name = mCurrentDir.getName();
+		String name = null;
+		if (mCurrentDir != null) {
+			name = mCurrentDir.getName();
+		}
 		if (SDDIR.getName().equals(name)) {
 			super.onBackPressed();
 		} else {
@@ -423,7 +426,10 @@ public class MainActivity extends Activity {
 	}
 	
 	public File upToParentDir(MenuItem v) {
-		File upDir = mCurrentDir.getParentFile();
+		File upDir = null;
+		if (mCurrentDir != null) {
+			upDir = mCurrentDir.getParentFile();
+		}
 		if (upDir != null) {
 			updateNewDir(upDir);
 			if (!mSelectedPosStack.isEmpty())
@@ -432,14 +438,19 @@ public class MainActivity extends Activity {
 		return upDir;
 	}
 
-	private void updateNewDir(File newFileDir) {
+	protected void updateNewDir(File newFileDir) {
 		mCurrentDir = newFileDir;
-		mListFiles = Utility.makeFilesArrayList(mCurrentDir.listFiles());
+		if (newFileDir == null) {
+			mListFiles.clear();
+		} else {
+			mTvCurrentDir.setText(mCurrentDir.getAbsolutePath());
+			mListFiles = Utility.makeFilesArrayList(mCurrentDir.listFiles());
+		}
 		Utility.sortFilesList(mListFiles);
 		mFilesListAdapter = new FileListAdapter(MainActivity.this,
 				R.layout.listitem, mListFiles);
 		mListView.setAdapter(mFilesListAdapter);
-		mTvCurrentDir.setText(mCurrentDir.getAbsolutePath());
+		
 	}
 
 	public void addToCheckedFilesList(File file) {

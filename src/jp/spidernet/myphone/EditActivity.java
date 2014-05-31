@@ -222,7 +222,7 @@ public class EditActivity extends MainActivity {
 		return upDir;
 	}
 
-	private void updateNewDir(File newFileDir) {
+	protected void updateNewDir(File newFileDir) {
 		mCurrentDir = newFileDir;
 		mListFiles = Utility.makeFilesArrayList(mCurrentDir.listFiles());
 		Utility.sortFilesList(mListFiles);
