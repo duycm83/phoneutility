@@ -441,7 +441,8 @@ public class MainActivity extends Activity {
 	protected void updateNewDir(File newFileDir) {
 		mCurrentDir = newFileDir;
 		if (newFileDir == null) {
-			mListFiles.clear();
+			if (SearchResultActivity.isFirstLoad)
+				mListFiles.clear();
 		} else {
 			mTvCurrentDir.setText(mCurrentDir.getAbsolutePath());
 			mListFiles = Utility.makeFilesArrayList(mCurrentDir.listFiles());

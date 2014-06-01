@@ -25,6 +25,7 @@ public class SearchResultActivity extends MainActivity implements
 	private TextView mStatusView;
 	private RadioGroup mRadioGroup = null;
 	private MyFilenameFilter.TYPE mSearchType = MyFilenameFilter.TYPE.NAME;
+	public static boolean isFirstLoad = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -32,13 +33,15 @@ public class SearchResultActivity extends MainActivity implements
 		setContentView(R.layout.search);
 		mStatusView = (TextView) findViewById(R.id.status_text);
 		mListView = (ListView) findViewById(R.id.listView);
-
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		updateNewDir(null);
+		if (isFirstLoad) {
+			updateNewDir(null);
+			isFirstLoad = false;
+		}
 	}
 
 	@Override
@@ -54,10 +57,10 @@ public class SearchResultActivity extends MainActivity implements
 
 	private void updateSearchResult() {
 		Utility.sortFilesList(mListFiles);
-		
+
 		mFilesListAdapter = new FileListAdapter(SearchResultActivity.this,
 				R.layout.listitem, mListFiles);
-		
+
 		mListView.setAdapter(mFilesListAdapter);
 	}
 
@@ -99,15 +102,16 @@ public class SearchResultActivity extends MainActivity implements
 	@Override
 	public boolean onQueryTextSubmit(String query) {
 		mListFiles.clear();
-		if (mSearchType != MyFilenameFilter.TYPE.SIZE_GREATER &&
-				mSearchType != MyFilenameFilter.TYPE.SIZE_SMALLER) {
+		if (mSearchType != MyFilenameFilter.TYPE.SIZE_GREATER
+				&& mSearchType != MyFilenameFilter.TYPE.SIZE_SMALLER) {
 			searchAction(SDDIR, mListFiles, mSearchType, query);
 		} else {
 			try {
 				int searchSize = Integer.parseInt(query);
 				searchActionSize(SDDIR, mListFiles, mSearchType, searchSize);
 			} catch (Exception e) {
-				Toast.makeText(this, "A number not is inputed", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "A number not is inputed",
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 		int resultSize = mListFiles.size();
@@ -220,4 +224,9 @@ public class SearchResultActivity extends MainActivity implements
 		}
 	}
 
+	@Override
+	protected void onDestroy() {
+		isFirstLoad = true;
+		super.onDestroy();
+	}
 }
