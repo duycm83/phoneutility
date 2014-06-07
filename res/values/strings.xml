@@ -23,8 +23,6 @@
     <string name="delete_file_confirm_title">File(s) Delete</string>
     <string name="rename_message">New file name</string>
     <string name="dialog_download_torrent_app_message">Torrent Application is not installed. Would you start Play Store and install Torrent application？</string>
-    <string name="title_activity_search_result">SearchResultActivity</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_search">Search: %s</string>
     <string name="action_search_result">Result: %d</string>
