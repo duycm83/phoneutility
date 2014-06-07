@@ -34,4 +34,6 @@
     <string name="seach_sizesmallter">File size smaller (bytes)</string>
 	<string name="numfiles_numfolders">%1$d Files  %2$d Folders</string>
 	<string name="file_details">Size: %1$s Updated: %2$s</string>
+	<string name="search_progress">Searching</string>
+	<string name="search_progress_name">Searching: %1$s</string>
 </resources>

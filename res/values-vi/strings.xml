@@ -24,4 +24,13 @@
 	<string name="delete_file_confirm_title">Xóa tập tin</string>
 	<string name="rename_message">Nhập tên mới</string>
 	<string name="dialog_download_torrent_app_message">Torrent chưa được cài đặt. Bạn có muốn mở Play Store và cài đặt chương trignh Torrent không？</string>
+   <string name="action_search_result">Result: %d</string>
+    <string name="search_name">Tên file</string>
+    <string name="search_ext">Loại file</string>
+    <string name="search_sizelarger">Dung lương file lớn hơn (bytes)</string>
+    <string name="seach_sizesmallter">Dung lượng file lớn hơn (bytes)</string>
+	<string name="numfiles_numfolders">%1$d File  %2$d Folders</string>
+	<string name="file_details">Dung Lượng: %1$s Sửa: %2$s</string>
+	<string name="search_progress">Đang tìm</string>
+	<string name="search_progress_name">Đang tìm: %1$s</string>
 </resources>

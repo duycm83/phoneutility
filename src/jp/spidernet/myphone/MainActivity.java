@@ -91,17 +91,15 @@ public class MainActivity extends Activity {
 		intentfilter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
 		intentfilter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
 		registerReceiver(deviceAtatchReceiver, intentfilter);
+		updateNewDir(mCurrentDir);
+		
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-//		 Intent myStarterIntent = new Intent(this, StartUpService.class);
-//		 startService(myStarterIntent);
-//		 AdlantisUtil.startAtlantis(this);
-		
-		updateNewDir(mCurrentDir);
-		setAdapter();
+//		updateNewDir(mCurrentDir);
+//		setAdapter();
 
 		Intent intent = getIntent();
 		Log.d(TAG, "intent: " + intent);
@@ -451,7 +449,7 @@ public class MainActivity extends Activity {
 		mFilesListAdapter = new FileListAdapter(MainActivity.this,
 				R.layout.listitem, mListFiles);
 		mListView.setAdapter(mFilesListAdapter);
-		
+		setAdapter();
 	}
 
 	public void addToCheckedFilesList(File file) {

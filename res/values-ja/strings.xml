@@ -24,4 +24,14 @@
 	<string name="delete_file_confirm_title">ファイル削除</string>
 	<string name="rename_message">名前を変更</string>
 	<string name="dialog_download_torrent_app_message">Torrentアプリケーションがインストールされていません。 Playストアを起動してアプリケーションをインストールましょうか？</string>
+    <string name="action_search">検索: %s</string>
+    <string name="action_search_result">Result: %d</string>
+    <string name="search_name">ファイル名</string>
+    <string name="search_ext">ファイルの拡張子</string>
+    <string name="search_sizelarger">ファイルのサイズより大きい (bytes)</string>
+    <string name="seach_sizesmallter">ファイルのサイズより小さい (bytes)</string>
+	<string name="numfiles_numfolders">%1$d ファイル  %2$d Folders</string>
+	<string name="file_details">サイズ: %1$s 更新: %2$s</string>
+	<string name="search_progress">検索中</string>
+	<string name="search_progress_name">検索中: %1$s</string>
 </resources>

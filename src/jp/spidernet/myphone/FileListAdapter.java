@@ -26,7 +26,7 @@ public class FileListAdapter extends ArrayAdapter<File> {
 	public static enum FILE_TYPE {
 		IMAGE, VIDEO, APK
 	};
-
+	private boolean mIsSearchList = false;
 	private ArrayList<File> mFiles = null;
 	private MainActivity mActivity;
 	private HashMap<String, Boolean> mCheckedMap = null;
@@ -42,6 +42,12 @@ public class FileListAdapter extends ArrayAdapter<File> {
 		if (activity.isCut() == false) {
 			activity.setCheckedFilesList(new ArrayList<File>());
 		}
+	}
+	
+	public FileListAdapter(MainActivity activity, int layoutId,
+			ArrayList<File> files, boolean isSearchList) {
+		this(activity, layoutId, files);
+		this.mIsSearchList = isSearchList;
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -66,6 +72,7 @@ public class FileListAdapter extends ArrayAdapter<File> {
 		TextView tvFileInfo = (TextView) listItem.findViewById(R.id.tvFileInfo);
 		ImageView ivIcon = (ImageView) listItem.findViewById(R.id.iv_icon);
 		CheckBox checkBox = (CheckBox) listItem.findViewById(R.id.checkBox);
+		
 		tvTitle.setText(title);
 		String fileName = file.getName();
 		String info = "";
@@ -91,6 +98,12 @@ public class FileListAdapter extends ArrayAdapter<File> {
 					childFiles, childFolders);
 			tvFileInfo.setText(info);
 		} else {
+			if (mIsSearchList) {
+				TextView tvFilePath = (TextView) listItem.findViewById(R.id.tvFilePath);
+				tvFilePath.setText(file.getPath());
+				tvFilePath.setVisibility(View.VISIBLE);
+				checkBox.setVisibility(View.GONE);
+			}
 			holder.imageView.setTag(file.getAbsolutePath());
 			
 			info = mActivity.getString(R.string.file_details, Utility
