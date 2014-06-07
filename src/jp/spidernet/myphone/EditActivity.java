@@ -28,12 +28,6 @@ public class EditActivity extends MainActivity {
 	private static final String TAG = EditActivity.class.getSimpleName();
 	private static final int DIALOG_ABOUT_ID = 1;
 	public static final String CURRENT_DIR = "current_dir";
-	private ListView mListView = null;
-	private ArrayList<File> mListFiles;
-	private ArrayList<File> mCheckedFilesList = new ArrayList<File>();
-	private TextView mTvCurrentDir = null;
-	private FileListAdapter mFilesListAdapter = null;
-	private Menu mMenu = null;
 	private int mEditMode = 0;
 	private String[] mFilesList = null;
 	
@@ -228,7 +222,7 @@ public class EditActivity extends MainActivity {
 		return upDir;
 	}
 
-	private void updateNewDir(File newFileDir) {
+	protected void updateNewDir(File newFileDir) {
 		mCurrentDir = newFileDir;
 		mListFiles = Utility.makeFilesArrayList(mCurrentDir.listFiles());
 		Utility.sortFilesList(mListFiles);

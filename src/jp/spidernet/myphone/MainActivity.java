@@ -53,19 +53,19 @@ public class MainActivity extends Activity {
 	public static final int EDIT_MODE_COPY = 2;
 	public static final String EXTRA_FILE_LIST = "files_list";
 	public static final String EXTRA_EDIT_MODE = "edit_mode";
-	private ListView mListView = null;
+	protected ListView mListView = null;
 	protected File SDDIR = Environment.getExternalStorageDirectory();
 	protected File mCurrentDir = SDDIR;
-	private ArrayList<File> mListFiles;
-	private TextView mTvCurrentDir = null;
+	protected ArrayList<File> mListFiles;
+	protected TextView mTvCurrentDir = null;
 	protected Stack<Integer> mSelectedPosStack = new Stack<Integer>();
-	private FileListAdapter mFilesListAdapter = null;
+	protected FileListAdapter mFilesListAdapter = null;
 	
-	private ArrayList<File> mCheckedFilesList = new ArrayList<File>();
+	protected ArrayList<File> mCheckedFilesList = new ArrayList<File>();
 	private ArrayList<File> mCutFilesList =  new ArrayList<File>();
 	private ArrayList<File> mCopyFilesList =  new ArrayList<File>();
-	private Menu mMenu = null;
-
+	protected Menu mMenu = null;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -86,7 +86,32 @@ public class MainActivity extends Activity {
 		mTvCurrentDir.setText(mCurrentDir.getAbsolutePath());
 		mListView = (ListView) findViewById(R.id.listView);
 		registerForContextMenu(mListView);
+		
+		IntentFilter intentfilter = new IntentFilter();
+		intentfilter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+		intentfilter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
+		registerReceiver(deviceAtatchReceiver, intentfilter);
 		updateNewDir(mCurrentDir);
+		
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+//		updateNewDir(mCurrentDir);
+//		setAdapter();
+
+		Intent intent = getIntent();
+		Log.d(TAG, "intent: " + intent);
+		String action = intent.getAction();
+
+		if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)) {
+			Log.v(TAG, action);
+			Toast.makeText(getBaseContext(), action, Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	protected void setAdapter() {
 		mListView.setAdapter(mFilesListAdapter);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View view, int pos,
@@ -131,32 +156,14 @@ public class MainActivity extends Activity {
 				}
 			}
 		});
-		IntentFilter intentfilter = new IntentFilter();
-		intentfilter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
-		intentfilter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-		registerReceiver(deviceAtatchReceiver, intentfilter);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-//		 Intent myStarterIntent = new Intent(this, StartUpService.class);
-//		 startService(myStarterIntent);
-//		 AdlantisUtil.startAtlantis(this);
-
-		Intent intent = getIntent();
-		Log.d(TAG, "intent: " + intent);
-		String action = intent.getAction();
-
-		if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)) {
-			Log.v(TAG, action);
-			Toast.makeText(getBaseContext(), action, Toast.LENGTH_SHORT).show();
-		}
 	}
 
 	@Override
 	public void onBackPressed() {
-		String name = mCurrentDir.getName();
+		String name = null;
+		if (mCurrentDir != null) {
+			name = mCurrentDir.getName();
+		}
 		if (SDDIR.getName().equals(name)) {
 			super.onBackPressed();
 		} else {
@@ -248,33 +255,14 @@ public class MainActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.main_menu, menu);
+		
 		this.mMenu = menu;
 		return true;
 	}
-
+	
+	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-//		if (mCheckedFilesList.size() > 0) {
-//			if (mCutFilesList != null && mCutFilesList.size() > 0) {
-//				menu.findItem(R.id.itemCut).setTitle(R.string.paste);
-//				menu.findItem(R.id.itemCut).setIcon(
-//						R.drawable.ic_menu_paste_holo_dark);
-//			} else {
-//				menu.findItem(R.id.itemCut).setTitle(R.string.cut);
-//				menu.findItem(R.id.itemCut).setIcon(R.drawable.ic_menu_cut);
-//				menu.findItem(R.id.itemCopy).setTitle(R.string.copy);
-//				menu.findItem(R.id.itemCopy).setIcon(R.drawable.ic_menu_copy);
-//			}
-//			menu.findItem(R.id.itemDelete).setVisible(true);
-//			menu.findItem(R.id.itemCut).setVisible(true);
-//			menu.findItem(R.id.itemCopy).setVisible(true);
-//			menu.findItem(R.id.itemCancel).setVisible(true);
-//		} else {
-//			menu.findItem(R.id.itemDelete).setVisible(false);
-//			menu.findItem(R.id.itemCut).setVisible(false);
-//			menu.findItem(R.id.itemCopy).setVisible(false);
-//			menu.findItem(R.id.itemCancel).setVisible(false);
-//		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -330,6 +318,12 @@ public class MainActivity extends Activity {
 		case R.id.itemCancel:
 			clearCheckedItem();
 			onMenuEditMode(null);
+			break;
+		case R.id.itemSearch:
+			clearCheckedItem();
+			onMenuEditMode(null);
+			Intent intent = new Intent(this, SearchResultActivity.class);
+			startActivity(intent);
 			break;
 		default:
 			break;
@@ -430,7 +424,10 @@ public class MainActivity extends Activity {
 	}
 	
 	public File upToParentDir(MenuItem v) {
-		File upDir = mCurrentDir.getParentFile();
+		File upDir = null;
+		if (mCurrentDir != null) {
+			upDir = mCurrentDir.getParentFile();
+		}
 		if (upDir != null) {
 			updateNewDir(upDir);
 			if (!mSelectedPosStack.isEmpty())
@@ -439,14 +436,20 @@ public class MainActivity extends Activity {
 		return upDir;
 	}
 
-	private void updateNewDir(File newFileDir) {
+	protected void updateNewDir(File newFileDir) {
 		mCurrentDir = newFileDir;
-		mListFiles = Utility.makeFilesArrayList(mCurrentDir.listFiles());
+		if (newFileDir == null) {
+			if (SearchResultActivity.isFirstLoad)
+				mListFiles.clear();
+		} else {
+			mTvCurrentDir.setText(mCurrentDir.getAbsolutePath());
+			mListFiles = Utility.makeFilesArrayList(mCurrentDir.listFiles());
+		}
 		Utility.sortFilesList(mListFiles);
 		mFilesListAdapter = new FileListAdapter(MainActivity.this,
 				R.layout.listitem, mListFiles);
 		mListView.setAdapter(mFilesListAdapter);
-		mTvCurrentDir.setText(mCurrentDir.getAbsolutePath());
+		setAdapter();
 	}
 
 	public void addToCheckedFilesList(File file) {

@@ -15,5 +15,8 @@
         android:title="@string/up_dir"
         android:showAsAction="always"
         android:onClick="upToParentDir"/>
-
+	<item android:id="@+id/itemSearch"
+         android:title="Search"
+         android:icon="@android:drawable/ic_menu_search"
+         android:showAsAction="always"/>
 </menu>

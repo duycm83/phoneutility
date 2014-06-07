@@ -4,7 +4,9 @@
     android:versionCode="7"
     android:versionName="2.2.2" >
 
-    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="17"/>
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,61 +17,64 @@
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.DeviceDefault"
-         >
+        android:theme="@android:style/Theme.DeviceDefault" >
         <meta-data
             android:name="Adlantis_Publisher_ID"
             android:value="MTMwODU%3D%0A" />
 
         <activity
-            android:name=".MainActivity"
-            android:configChanges="orientation|keyboardHidden"
-            >
+            android:name="jp.spidernet.myphone.MainActivity"
+            android:configChanges="orientation|keyboardHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-           <!-- 
+            <!--
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
              <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
             android:resource="@xml/device_filter" />
-         -->
+            -->
         </activity>
         <activity
-            android:name=".EditActivity"
-            android:configChanges="orientation|keyboardHidden">
+            android:name="jp.spidernet.myphone.EditActivity"
+            android:configChanges="orientation|keyboardHidden" >
         </activity>
         <activity
-            android:name=".AboutActivity"
+            android:name="jp.spidernet.myphone.AboutActivity"
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Dialog" >
         </activity>
 
         <receiver
-            android:name=".AlarmReceiver"
+            android:name="jp.spidernet.myphone.AlarmReceiver"
             android:process=":remote" >
         </receiver>
 
         <service
-            android:name=".StartUpService"
+            android:name="jp.spidernet.myphone.StartUpService"
             android:enabled="true" >
         </service>
 
-        <receiver android:name=".BootReceiver" >
+        <receiver android:name="jp.spidernet.myphone.BootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="android.intent.action.SCREEN_ON" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-                <receiver android:name=".BatteryInfoReceiver" >
+        <receiver android:name="jp.spidernet.myphone.BatteryInfoReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BATTERY_CHANGED" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name="jp.spidernet.myphone.SearchResultActivity"
+            android:label="@string/title_activity_search_result" >
+        </activity>
     </application>
 
 </manifest>
