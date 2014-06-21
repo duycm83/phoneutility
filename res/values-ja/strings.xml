@@ -35,4 +35,7 @@
 	<string name="file_details">サイズ: %1$s 更新: %2$s</string>
 	<string name="search_progress">検索中</string>
 	<string name="search_progress_name">検索中: %1$s</string>
+	<string name="lastupdate">変更日</string>
+	<string name="size">サイズ</string>
+	<string name="filename">名前</string>
 </resources>

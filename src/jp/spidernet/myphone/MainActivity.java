@@ -34,8 +34,10 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -60,24 +62,24 @@ public class MainActivity extends Activity {
 	protected TextView mTvCurrentDir = null;
 	protected Stack<Integer> mSelectedPosStack = new Stack<Integer>();
 	protected FileListAdapter mFilesListAdapter = null;
-	
+
 	protected ArrayList<File> mCheckedFilesList = new ArrayList<File>();
-	private ArrayList<File> mCutFilesList =  new ArrayList<File>();
-	private ArrayList<File> mCopyFilesList =  new ArrayList<File>();
+	private ArrayList<File> mCutFilesList = new ArrayList<File>();
+	private ArrayList<File> mCopyFilesList = new ArrayList<File>();
 	protected Menu mMenu = null;
-	
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		setCloseFooter();
-		if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-		    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		} else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-		    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		} else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		} else {
-		    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 		}
 		// Utility.getSensorInfo(getBaseContext());
 		Utility.getLocationInfo(getBaseContext());
@@ -86,20 +88,19 @@ public class MainActivity extends Activity {
 		mTvCurrentDir.setText(mCurrentDir.getAbsolutePath());
 		mListView = (ListView) findViewById(R.id.listView);
 		registerForContextMenu(mListView);
-		
+
 		IntentFilter intentfilter = new IntentFilter();
 		intentfilter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
 		intentfilter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
 		registerReceiver(deviceAtatchReceiver, intentfilter);
 		updateNewDir(mCurrentDir);
-		
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-//		updateNewDir(mCurrentDir);
-//		setAdapter();
+		// updateNewDir(mCurrentDir);
+		// setAdapter();
 
 		Intent intent = getIntent();
 		Log.d(TAG, "intent: " + intent);
@@ -135,7 +136,7 @@ public class MainActivity extends Activity {
 						mimeType = MimeTypeMap.getSingleton()
 								.getMimeTypeFromExtension(extension);
 						if (mimeType == null)
-						mimeType = Utility.MIME_TORRENT;
+							mimeType = Utility.MIME_TORRENT;
 					} else {
 						mimeType = MimeTypeMap.getSingleton()
 								.getMimeTypeFromExtension(extension);
@@ -147,8 +148,8 @@ public class MainActivity extends Activity {
 						startActivity(intent);
 					} catch (Exception e) {
 						e.printStackTrace();
-						 if (Utility.MIME_TORRENT.equals(mimeType)) 
-							 showDialog(DIALOG_PLAY_SEARCH_TORRENT_ID);
+						if (Utility.MIME_TORRENT.equals(mimeType))
+							showDialog(DIALOG_PLAY_SEARCH_TORRENT_ID);
 					}
 				} else {
 					mSelectedPosStack.push(pos);
@@ -172,7 +173,7 @@ public class MainActivity extends Activity {
 				super.onBackPressed();
 			}
 		}
-		
+
 		changeToMenuMain();
 	}
 
@@ -183,21 +184,28 @@ public class MainActivity extends Activity {
 		case DIALOG_PLAY_SEARCH_TORRENT_ID:
 			// 1. Instantiate an AlertDialog.Builder with its constructor
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			// 2. Chain together various setter methods to set the dialog characteristics
+			// 2. Chain together various setter methods to set the dialog
+			// characteristics
 			builder.setMessage(R.string.dialog_download_torrent_app_message)
-			// Add the buttons
-			.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.cancel();
-					Intent goToMarket = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://search?q=torrent"));
-					startActivity(goToMarket);
-				}
-			})
-			.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.cancel();
-				}
-			});
+					// Add the buttons
+					.setPositiveButton(android.R.string.ok,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									dialog.cancel();
+									Intent goToMarket = new Intent(
+											Intent.ACTION_VIEW).setData(Uri
+											.parse("market://search?q=torrent"));
+									startActivity(goToMarket);
+								}
+							})
+					.setNegativeButton(R.string.cancel,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									dialog.cancel();
+								}
+							});
 			// 3. Get the AlertDialog from create()
 			dialog = builder.create();
 			break;
@@ -207,35 +215,38 @@ public class MainActivity extends Activity {
 			dialog.setContentView(R.layout.about);
 			dialog.setTitle(R.string.app_name);
 			dialog.findViewById(R.id.close).setOnClickListener(
-				new OnClickListener() {
-					public void onClick(View arg0) {
-						dismissDialog(DIALOG_ABOUT_ID);
-					}
-			});
+					new OnClickListener() {
+						public void onClick(View arg0) {
+							dismissDialog(DIALOG_ABOUT_ID);
+						}
+					});
 			break;
 		case DIALOG_DELETE_ID:
 			// 1. Instantiate an AlertDialog.Builder with its constructor
 			builder = new AlertDialog.Builder(this);
-			// 2. Chain together various setter methods to set the dialog characteristics
-			builder.setMessage(R.string.delete_confirm)
-			.setTitle(R.string.delete_file_confirm_title);
+			// 2. Chain together various setter methods to set the dialog
+			// characteristics
+			builder.setMessage(R.string.delete_confirm).setTitle(
+					R.string.delete_file_confirm_title);
 			// Add the buttons
-			builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.cancel();
-					deleteSelectedFiles();
-				}
-			});
-			builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.cancel();
-					changeToMenuMain();
-				}
-			});
+			builder.setPositiveButton(android.R.string.ok,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+							deleteSelectedFiles();
+						}
+					});
+			builder.setNegativeButton(R.string.cancel,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+							changeToMenuMain();
+						}
+					});
 
 			// 3. Get the AlertDialog from create()
 			dialog = builder.create();
-			
+
 			break;
 		default:
 			dialog = super.onCreateDialog(id);
@@ -255,12 +266,11 @@ public class MainActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.main_menu, menu);
-		
+
 		this.mMenu = menu;
 		return true;
 	}
-	
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		return super.onPrepareOptionsMenu(menu);
@@ -288,7 +298,8 @@ public class MainActivity extends Activity {
 			CommonDialogFactory.make1(this, getString(R.string.new_file),
 					new ISimpleListener() {
 						public void onClick(String... params) {
-							File file = new File(mCurrentDir, params[0]+".txt");
+							File file = new File(mCurrentDir, params[0]
+									+ ".txt");
 							if (!file.exists()) {
 								try {
 									boolean result = file.createNewFile();
@@ -304,7 +315,7 @@ public class MainActivity extends Activity {
 						}
 					}, new ISimpleListener() {
 						public void onClick(String... params) {
-							File file = new File(mCurrentDir,params[0]);
+							File file = new File(mCurrentDir, params[0]);
 							if (!file.exists()) {
 								boolean result = file.mkdir();
 								if (result) {
@@ -359,10 +370,10 @@ public class MainActivity extends Activity {
 			// menu.add(info.position, i, i, menuItems[i]);
 			// }
 			menu.add(info.position, 0, 0, R.string.rename);
-//			if (mCutFilesList == null)
-//				menu.add(info.position, 1, 1, R.string.cut);
-//			else
-//				menu.add(info.position, 1, 1, R.string.paste);
+			// if (mCutFilesList == null)
+			// menu.add(info.position, 1, 1, R.string.cut);
+			// else
+			// menu.add(info.position, 1, 1, R.string.paste);
 		}
 	}
 
@@ -422,7 +433,7 @@ public class MainActivity extends Activity {
 		}
 		return true;
 	}
-	
+
 	public File upToParentDir(MenuItem v) {
 		File upDir = null;
 		if (mCurrentDir != null) {
@@ -499,14 +510,15 @@ public class MainActivity extends Activity {
 		super.onDestroy();
 		unregisterReceiver(deviceAtatchReceiver);
 	};
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_CANCELED) {
 			clearCheckedItem();
 			changeToMenuMain();
 			if (data != null) {
-				String currentDir = data.getStringExtra(EditActivity.CURRENT_DIR);
+				String currentDir = data
+						.getStringExtra(EditActivity.CURRENT_DIR);
 				if (currentDir != null) {
 					mCurrentDir = new File(currentDir);
 					updateNewDir(mCurrentDir);
@@ -515,7 +527,7 @@ public class MainActivity extends Activity {
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
+
 	public void onMenuEditMode(View view) {
 		if (this.mMenu == null) {
 			return;
@@ -525,7 +537,7 @@ public class MainActivity extends Activity {
 				MenuInflater menuInflater = getMenuInflater();
 				menuInflater.inflate(R.menu.edit_select_menu, this.mMenu);
 			} else if (mCopyFilesList.size() > 0 || mCutFilesList.size() > 0) {
-				//菴輔ｂ縺励↑縺�
+				// 菴輔ｂ縺励↑縺�
 			} else {
 				this.mMenu.clear();
 				MenuInflater menuInflater = getMenuInflater();
@@ -533,7 +545,7 @@ public class MainActivity extends Activity {
 			}
 		}
 	}
-	
+
 	private void changeToMenuMain() {
 		clearCheckedItem();
 		if (this.mMenu != null) {
@@ -542,7 +554,7 @@ public class MainActivity extends Activity {
 			menuInflater.inflate(R.menu.main_menu, this.mMenu);
 		}
 	}
-	
+
 	private void startEditMode(int editMode, ArrayList<File> checkedList) {
 		int size = checkedList.size();
 		String[] filesList = new String[size];
@@ -550,18 +562,19 @@ public class MainActivity extends Activity {
 			File file = checkedList.get(i);
 			filesList[i] = file.getAbsolutePath();
 		}
-		
+
 		Intent intent = new Intent(this, EditActivity.class);
 		intent.putExtra(EXTRA_FILE_LIST, filesList);
 		intent.putExtra(EXTRA_EDIT_MODE, editMode);
 		startActivityForResult(intent, editMode);
 	}
-	
+
 	class DeleteFileAsyncTask extends AsyncTask<File, Integer, Boolean> {
 		ProgressDialog dialog = null;
-		
+
 		public DeleteFileAsyncTask() {
 		}
+
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -570,12 +583,12 @@ public class MainActivity extends Activity {
 			dialog.setMessage(getString(R.string.deleting));
 			dialog.show();
 		}
-		
+
 		@Override
 		protected void onProgressUpdate(Integer... values) {
 			super.onProgressUpdate(values);
 		}
-		
+
 		/**
 		 * arrayfiles縺ｮ蠑墓焚縺ｯ譛ｪ菴ｿ逕ｨ
 		 */
@@ -585,7 +598,7 @@ public class MainActivity extends Activity {
 				for (File file : mCheckedFilesList) {
 					if (file.isDirectory()) {
 						try {
-							if(FileUtils.deleteRecursive(file)) {
+							if (FileUtils.deleteRecursive(file)) {
 								mListFiles.remove(file);
 							}
 						} catch (FileNotFoundException e) {
@@ -598,9 +611,7 @@ public class MainActivity extends Activity {
 					}
 				}
 			}
-			
-			
-		
+
 			return null;
 		}
 
@@ -614,15 +625,30 @@ public class MainActivity extends Activity {
 			super.onPostExecute(result);
 		}
 	}
-	
+
 	protected void setCloseFooter() {
 		final View footer = findViewById(R.id.footer);
-		findViewById(R.id.button_close).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				footer.setVisibility(View.GONE);
-			}
-		});
+		findViewById(R.id.button_close).setOnClickListener(
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						footer.setVisibility(View.GONE);
+					}
+				});
+	}
+
+	boolean flag = false;
+
+	public void onSort(View view) {
+		int id = view.getId();
+		System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
+		mFilesListAdapter.sort(new FileComparator(id, flag));
+		mFilesListAdapter.notifyDataSetChanged();
+		if (flag) {
+			flag = false;
+		} else {
+			flag = true;
+		}
 	}
 
 }

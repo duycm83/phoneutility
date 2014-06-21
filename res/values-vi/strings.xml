@@ -35,4 +35,7 @@
 	<string name="file_details">Dung Lượng: %1$s Sửa: %2$s</string>
 	<string name="search_progress">Đang tìm</string>
 	<string name="search_progress_name">Đang tìm: %1$s</string>
+	<string name="lastupdate">Date</string>
+	<string name="size">Size</string>
+	<string name="filename">Name</string>
 </resources>

@@ -3,6 +3,8 @@ package jp.spidernet.myphone;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -27,7 +29,7 @@ public class FileListAdapter extends ArrayAdapter<File> {
 		IMAGE, VIDEO, APK
 	};
 	private boolean mIsSearchList = false;
-	private ArrayList<File> mFiles = null;
+	private ArrayList<File> mFilesList = null;
 	private MainActivity mActivity;
 	private HashMap<String, Boolean> mCheckedMap = null;
 	private ArrayList<CompoundButton> mCheckedView = null;
@@ -35,7 +37,7 @@ public class FileListAdapter extends ArrayAdapter<File> {
 	public FileListAdapter(MainActivity activity, int layoutId,
 			ArrayList<File> files) {
 		super(activity, layoutId, files);
-		mFiles = files;
+		mFilesList = files;
 		mActivity = activity;
 		mCheckedMap = new HashMap<String, Boolean>();
 		mCheckedView = new ArrayList<CompoundButton>();
@@ -64,7 +66,7 @@ public class FileListAdapter extends ArrayAdapter<File> {
 			listItem = convertView;
 			holder = (ViewHolder) listItem.getTag();
 		}
-		File file = mFiles.get(position);
+		File file = mFilesList.get(position);
 		String title = file.getName();
 		long fileSize = file.length();
 		long lastModified = file.lastModified();
@@ -192,6 +194,16 @@ public class FileListAdapter extends ArrayAdapter<File> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public void sortFile(int option) {
+		
+		Collections.sort(mFilesList, new FileComparator(R.id.sortSize, true));
+		
+	}
+	
+	Comparator<File> sizeComparator = null;
+	
+	
 	class ViewHolder {
 		ImageView imageView;
 		int iconType;

@@ -1,17 +1,13 @@
 package jp.spidernet.myphone.adlantis;
 
+import jp.spidernet.myphone.AlarmReceiver;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
-import android.util.AttributeSet;
-import android.view.View;
-import jp.Adlantis.Android.AdlantisView;
-import jp.spidernet.myphone.AlarmReceiver;
 
 public class AdlantisUtil {
-	private static final int REPEATING_TIME = 15*60*1000; //10分
+	private static final int REPEATING_TIME = 15*60*1000; //10蛻�
 	private static final String TAG = "StartUpService";
 	private static Intent intent = null;
 	public static void startAtlantis(Context context) {

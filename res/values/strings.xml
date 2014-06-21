@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="hello">Welcome</string>
     <string name="app_name">Phone Utility</string>
     <string name="version">Version:1.0 (build:03/2014)</string>
@@ -30,8 +31,12 @@
     <string name="search_ext">File Extension</string>
     <string name="search_sizelarger">File size larger (bytes)</string>
     <string name="seach_sizesmallter">File size smaller (bytes)</string>
-	<string name="numfiles_numfolders">%1$d Files  %2$d Folders</string>
-	<string name="file_details">Size: %1$s Updated: %2$s</string>
-	<string name="search_progress">Searching</string>
-	<string name="search_progress_name">Searching: %1$s</string>
+    <string name="numfiles_numfolders">%1$d Files  %2$d Folders</string>
+    <string name="file_details">Size: %1$s Updated: %2$s</string>
+    <string name="search_progress">Searching</string>
+    <string name="search_progress_name">Searching: %1$s</string>
+    <string name="lastupdate">Date</string>
+    <string name="size">Size</string>
+    <string name="filename">Name</string>
+
 </resources>
