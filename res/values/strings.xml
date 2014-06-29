@@ -29,8 +29,7 @@
     <string name="action_search_result">Result: %d</string>
     <string name="search_name">File Name</string>
     <string name="search_ext">File Extension</string>
-    <string name="search_sizelarger">File size larger (bytes)</string>
-    <string name="seach_sizesmallter">File size smaller (bytes)</string>
+    <string name="search_size">File size</string>
     <string name="numfiles_numfolders">%1$d Files  %2$d Folders</string>
     <string name="file_details">Size: %1$s Updated: %2$s</string>
     <string name="search_progress">Searching</string>
@@ -38,5 +37,33 @@
     <string name="lastupdate">Date</string>
     <string name="size">Size</string>
     <string name="filename">Name</string>
+    <string name="inputfilename">Input file name</string>
+    <string name="search_title">Search Options</string>
+    <string name="search_size_title">File Size</string>
+    <string name="search_extend_title">File Type</string>
+
+    <string-array name="search_type">
+        <item>Search all</item>
+        <item>Search by size</item>
+        <item>Search by type</item>
+    </string-array>
+    <string-array name="search_size">
+        <item>0 ~ 100KB</item>
+        <item>100KB ~ 1MB</item>
+        <item>1MB ~ 10MB</item>
+        <item>10MB ~ 100MB</item>
+        <item> > 100MB</item>
+    </string-array>
+    <string-array name="search_extend">
+        <item>Text: *.txt</item>
+        <item>Image: *.jpg, *.png, *.gif</item>
+        <item>Audio: *.mp3</item>
+        <item>Video: *.mp4, *.avi</item>
+        <item>Excel: *.xls, *.xlsx</item>
+        <item>Word: *.doc, *.docx</item>
+        <item>Android: *.apk</item>
+        <item>Torrent: *.torrent</item>
+        <item>None extend</item>
+    </string-array>
 
 </resources>

@@ -25,13 +25,16 @@ public class SearchResultActivity extends MainActivity implements
 	private static final String TAG = "SearchResultActivity";
 	private SearchView mSearchView;
 	private TextView mStatusView;
-	private RadioGroup mRadioGroup = null;
 	private MyFilenameFilter.TYPE mSearchType = MyFilenameFilter.TYPE.NAME;
 	public static boolean isFirstLoad = true;
-	private int DIALOG_SEARCH_OPTIONS = 1;
+	private int DIALOG_SEARCH_TYPE = 1;
 	private int DIALOG_SEARCH_PROGRESS = 2;
+	private int DIALOG_SEARCH_SIZE = 3;
+	private int DIALOG_SEARCH_EXT = 4;
 	private String mSearchWord = "";
+	private String mSearchTypeName = "";
 
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,6 +58,7 @@ public class SearchResultActivity extends MainActivity implements
 		getMenuInflater().inflate(R.menu.search_result, menu);
 		MenuItem searchItem = menu.findItem(R.id.search);
 		mSearchView = (SearchView) searchItem.getActionView();
+		mSearchView.setQueryHint(getText(R.string.inputfilename));
 		setupSearchView(searchItem);
 		// mSearchView.onActionViewExpanded();
 		return true;
@@ -77,23 +81,6 @@ public class SearchResultActivity extends MainActivity implements
 					| MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 		}
 
-		// SearchManager searchManager = (SearchManager)
-		// getSystemService(Context.SEARCH_SERVICE);
-		// if (searchManager != null) {
-		// List<SearchableInfo> searchables = searchManager
-		// .getSearchablesInGlobalSearch();
-		//
-		// SearchableInfo info = searchManager
-		// .getSearchableInfo(getComponentName());
-		// for (SearchableInfo inf : searchables) {
-		// if (inf.getSuggestAuthority() != null
-		// && inf.getSuggestAuthority().startsWith("applications")) {
-		// info = inf;
-		// }
-		// }
-		// mSearchView.setSearchableInfo(info);
-		// }
-
 		mSearchView.setOnQueryTextListener(this);
 	}
 
@@ -107,29 +94,6 @@ public class SearchResultActivity extends MainActivity implements
 	@Override
 	public boolean onQueryTextSubmit(String query) {
 		mSearchWord = query;
-		// mListFiles.clear();
-		// if (mSearchType != MyFilenameFilter.TYPE.SIZE_GREATER
-		// && mSearchType != MyFilenameFilter.TYPE.SIZE_SMALLER) {
-		// searchAction(SDDIR, mListFiles, mSearchType, query);
-		// } else {
-		// try {
-		// int searchSize = Integer.parseInt(query);
-		// searchActionSize(SDDIR, mListFiles, mSearchType, searchSize);
-		// } catch (Exception e) {
-		// Toast.makeText(this, "A number not is inputed",
-		// Toast.LENGTH_SHORT).show();
-		// }
-		// }
-		// int resultSize = mListFiles.size();
-		// String searchText = getString(R.string.action_search_result,
-		// resultSize);
-		// if (mListFiles.size() > 0) {
-		// updateSearchResult();
-		// } else {
-		// Log.v(TAG, "not found");
-		// }
-		// mStatusView.setText(searchText);
-
 		SearchAsyncTask asyncTask = new SearchAsyncTask();
 		asyncTask.execute(mSearchWord);
 		return true;
@@ -148,52 +112,120 @@ public class SearchResultActivity extends MainActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		if (R.id.search_options == id) {
-			showDialog(DIALOG_SEARCH_OPTIONS);
+			showDialog(DIALOG_SEARCH_TYPE);
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onPrepareDialog(int id, Dialog dialog) {
+		
+		super.onPrepareDialog(id, dialog);
 	}
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		Dialog dialog = null;
-		if (id == DIALOG_SEARCH_OPTIONS) {
+		if (id == DIALOG_SEARCH_TYPE) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			LayoutInflater inflater = getLayoutInflater();
-			View view = inflater.inflate(R.layout.search_option, null);
-			mRadioGroup = (RadioGroup) view.findViewById(R.id.groupRadioButton);
-			builder.setView(view);
-			// Add the buttons
-			builder.setPositiveButton(android.R.string.ok,
+			builder.setTitle(R.string.search_title).setSingleChoiceItems(
+					R.array.search_type, 0,
 					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {
-							// User clicked OK button
-							int checkedId = mRadioGroup
-									.getCheckedRadioButtonId();
-							switch (checkedId) {
-							case R.id.search_name:
+						public void onClick(DialogInterface dialog, int which) {
+							// The 'which' argument contains the index position
+							// of the selected item
+							switch (which) {
+							case 0:
 								mSearchType = MyFilenameFilter.TYPE.NAME;
 								break;
-							case R.id.search_ext:
-								mSearchType = MyFilenameFilter.TYPE.EXT;
+							case 1:
+								showDialog(DIALOG_SEARCH_SIZE);
 								break;
-							case R.id.search_sizelarger:
-								mSearchType = MyFilenameFilter.TYPE.SIZE_GREATER;
+							case 2:
+								showDialog(DIALOG_SEARCH_EXT);
 								break;
-							case R.id.search_sizesmallter:
-								mSearchType = MyFilenameFilter.TYPE.SIZE_SMALLER;
+							default:
 								break;
 							}
+							dialog.dismiss();
 						}
 					});
-			// builder.setNegativeButton(R.string.cancel, new
-			// DialogInterface.OnClickListener() {
-			// public void onClick(DialogInterface dialog, int id) {
-			// // User cancelled the dialog
-			// }
-			// });
-
 			dialog = builder.create();
-			dialog.setTitle("Search options");
+		} else if (id == DIALOG_SEARCH_SIZE) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(R.string.search_size_title).setSingleChoiceItems(
+					R.array.search_size, 0,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							switch (which) {
+							case 0:
+								mSearchType =  MyFilenameFilter.TYPE.SIZE_0_100KB;
+								mSearchTypeName = "0~100KB";
+								break;
+							case 1:
+								mSearchType =  MyFilenameFilter.TYPE.SIZE_100_1MB;
+								break;
+							case 2:
+								mSearchType =  MyFilenameFilter.TYPE.SIZE_1_10MB;
+								break;
+							case 3:
+								mSearchType =  MyFilenameFilter.TYPE.SIZE_10_100MB;
+								break;
+							case 4:
+								mSearchType =  MyFilenameFilter.TYPE.SIZE_100MB;
+								break;
+							default:
+								break;
+							}
+							dialog.dismiss();
+							SearchAsyncTask asyncTask = new SearchAsyncTask();
+							asyncTask.execute(mSearchWord);
+						}
+					});
+			dialog = builder.create();
+		} else if (id == DIALOG_SEARCH_EXT) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(R.string.search_extend_title).setSingleChoiceItems(
+					R.array.search_extend, 0,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							switch (which) {
+							case 0:
+								mSearchType =  MyFilenameFilter.TYPE.EXT_TEXT;
+								break;
+							case 1:
+								mSearchType =  MyFilenameFilter.TYPE.EXT_IMAGE;
+								break;
+							case 2:
+								mSearchType =  MyFilenameFilter.TYPE.EXT_AUDIO;
+								break;
+							case 3:
+								mSearchType =  MyFilenameFilter.TYPE.EXT_VIDEO;
+								break;
+							case 4:
+								mSearchType =  MyFilenameFilter.TYPE.EXT_EXCEL;
+								break;
+							case 5:
+								mSearchType =  MyFilenameFilter.TYPE.EXT_WORD;
+								break;
+							case 6:
+								mSearchType =  MyFilenameFilter.TYPE.EXT_TORENT;
+								break;
+							case 7:
+								mSearchType =  MyFilenameFilter.TYPE.EXT_TORENT;
+								break;
+							case 8:
+								mSearchType =  MyFilenameFilter.TYPE.EXT_NONE;
+								break;
+							default:
+								break;
+							}
+							dialog.dismiss();
+							SearchAsyncTask asyncTask = new SearchAsyncTask();
+							asyncTask.execute(mSearchWord);
+						}
+					});
+			dialog = builder.create();
 		} else if (id == DIALOG_SEARCH_PROGRESS) {
 			dialog = ProgressDialog.show(this,
 					getString(R.string.search_progress),
@@ -201,8 +233,6 @@ public class SearchResultActivity extends MainActivity implements
 		}
 		return dialog;
 	}
-
-	
 
 	@Override
 	protected void onDestroy() {
@@ -216,26 +246,18 @@ public class SearchResultActivity extends MainActivity implements
 
 		@Override
 		protected void onPreExecute() {
-			dialog = ProgressDialog.show(SearchResultActivity.this,
+			dialog = ProgressDialog.show(
+					SearchResultActivity.this,
 					getString(R.string.search_progress),
-					getString(R.string.search_progress_name, ROOT_DIR.toString()));
+					getString(R.string.search_progress_name,
+							ROOT_DIR.toString()));
 			super.onPreExecute();
 		}
 
 		@Override
 		protected Integer doInBackground(String... params) {
 			mListFiles.clear();
-			if (mSearchType != MyFilenameFilter.TYPE.SIZE_GREATER
-					&& mSearchType != MyFilenameFilter.TYPE.SIZE_SMALLER) {
-				searchAction(ROOT_DIR, mListFiles, mSearchType, params[0]);
-			} else {
-				try {
-					int searchSize = Integer.parseInt(params[0]);
-					searchActionSize(SDDIR, mListFiles, mSearchType, searchSize);
-				} catch (Exception e) {
-					return -1;
-				}
-			}
+			searchAction(ROOT_DIR, mListFiles, mSearchType, params[0]);
 			int resultSize = mListFiles.size();
 			return resultSize;
 		}
@@ -260,11 +282,11 @@ public class SearchResultActivity extends MainActivity implements
 			}
 			super.onPostExecute(result);
 		}
-		
+
 		private void searchAction(final File target, ArrayList<File> result,
 				MyFilenameFilter.TYPE type, String keyword) {
 			runOnUiThread(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					dialog.setMessage(target.getPath());
@@ -281,27 +303,13 @@ public class SearchResultActivity extends MainActivity implements
 			} else {
 				Log.v(TAG, "file not matchs");
 			}
-			
+
 			if (nextFolders != null) {
 				for (File file : nextFolders) {
 					searchAction(file, result, type, keyword);
 				}
 			} else {
 				Log.v(TAG, "Next folders not found");
-			}
-		}
-
-		private void searchActionSize(File target, ArrayList<File> result,
-				MyFilenameFilter.TYPE type, int size) {
-			File[] nextFolders = target.listFiles(new MyFilenameFilter(
-					MyFilenameFilter.TYPE.FOLDER, null));
-			File[] matchedFiles = target
-					.listFiles(new MyFilenameFilter(type, size));
-			for (File file : matchedFiles) {
-				result.add(file);
-			}
-			for (File file : nextFolders) {
-				searchActionSize(file, result, type, size);
 			}
 		}
 

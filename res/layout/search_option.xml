@@ -23,16 +23,10 @@
             android:text="@string/search_ext" />
 
         <RadioButton
-            android:id="@+id/search_sizelarger"
+            android:id="@+id/search_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/search_sizelarger" />
-
-        <RadioButton
-            android:id="@+id/search_sizesmallter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/seach_sizesmallter" />
+            android:text="@string/search_size" />
     </RadioGroup>
 
 </LinearLayout>
