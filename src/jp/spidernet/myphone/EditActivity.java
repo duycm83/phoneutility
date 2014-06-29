@@ -156,11 +156,11 @@ public class EditActivity extends MainActivity {
 		case R.id.itemPaste:
 			new EditAsyncTask(mFilesList, mCurrentDir).execute(mEditMode);
 			break;
-		case R.id.itemAbout:
-			// Intent intent = new Intent(this, AboutActivity.class);
-			// startActivity(intent);
-			showDialog(DIALOG_ABOUT_ID);
-			break;
+//		case R.id.itemAbout:
+//			// Intent intent = new Intent(this, AboutActivity.class);
+//			// startActivity(intent);
+//			showDialog(DIALOG_ABOUT_ID);
+//			break;
 		case R.id.itemNewFile:
 			CommonDialogFactory.make1(this, getString(R.string.new_file),
 					new ISimpleListener() {

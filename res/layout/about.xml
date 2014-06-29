@@ -32,12 +32,6 @@
         android:text="@string/contact"
         android:textSize="15sp" />
 
-    <jp.Adlantis.Android.AdlantisView
-        android:id="@+id/adlantis"
-        android:layout_width="fill_parent"
-        android:layout_height="50dip"
-        android:gravity="center" >
-    </jp.Adlantis.Android.AdlantisView>
 
     <Button
         android:id="@+id/close"

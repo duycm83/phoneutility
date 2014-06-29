@@ -29,8 +29,6 @@
     <string name="action_search_result">Result: %d</string>
     <string name="search_name">Tên file</string>
     <string name="search_ext">Loại file</string>
-    <string name="search_sizelarger">Dung lương file lớn hơn (bytes)</string>
-    <string name="seach_sizesmallter">Dung lượng file lớn hơn (bytes)</string>
     <string name="numfiles_numfolders">%1$d File  %2$d Folders</string>
     <string name="file_details">Dung Lượng: %1$s Ngày Sửa: %2$s</string>
     <string name="search_progress">Đang tìm</string>
@@ -46,6 +44,13 @@
         <item>Tất cả</item>
         <item>Chọn dung lượng file</item>
         <item>Chọn loại file</item>
+    </string-array>
+    <string-array name="search_size">
+        <item>0 ~ 100KB</item>
+        <item>100KB ~ 1MB</item>
+        <item>1MB ~ 10MB</item>
+        <item>10MB ~ 100MB</item>
+        <item> > 100MB</item>
     </string-array>
     <string-array name="search_extend">
         <item>Text: *.txt</item>

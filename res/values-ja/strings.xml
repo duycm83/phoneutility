@@ -29,8 +29,6 @@
     <string name="action_search_result">Result: %d</string>
     <string name="search_name">ファイル名</string>
     <string name="search_ext">ファイルの拡張子</string>
-    <string name="search_sizelarger">ファイルのサイズより大きい (bytes)</string>
-    <string name="seach_sizesmallter">ファイルのサイズより小さい (bytes)</string>
     <string name="numfiles_numfolders">%1$d ファイル  %2$d Folders</string>
     <string name="file_details">サイズ: %1$s 更新日: %2$s</string>
     <string name="search_progress">検索中</string>
@@ -43,6 +41,13 @@
     <string name="search_size_title">サイズ</string>
     <string name="search_extend_title">拡張子</string>
 
+    <string-array name="search_size">
+        <item>0 ~ 100KB</item>
+        <item>100KB ~ 1MB</item>
+        <item>1MB ~ 10MB</item>
+        <item>10MB ~ 100MB</item>
+        <item> > 100MB</item>
+    </string-array>
     <string-array name="search_type">
         <item>全て</item>
         <item>サイズ指定</item>
