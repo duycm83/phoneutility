@@ -37,9 +37,11 @@
     <string name="size">Size</string>
     <string name="filename">Name</string>
     <string name="inputfilename">Tên File</string>
- <string name="search_title">Tuỳ chọn tìm kiếm</string>
+    <string name="search_title">Tuỳ chọn tìm kiếm</string>
     <string name="search_size_title">Dung lượng file</string>
     <string name="search_extend_title">Loại file</string>
+    <string name="select_file_type">Chọn loại file</string>
+
     <string-array name="search_type">
         <item>Tất cả</item>
         <item>Chọn dung lượng file</item>
@@ -63,5 +65,14 @@
         <item>Torrent: *.torrent</item>
         <item>None extend</item>
     </string-array>
-
+    <string-array name="context_menu">
+        <item>Đổi tên</item>
+        <item>Cắt</item>
+    </string-array>
+<string-array name="select_applications">
+        <item>File video</item>
+        <item>File audio</item>
+        <item>File image</item>
+        <item>Tile text</item>
+    </string-array>
 </resources>

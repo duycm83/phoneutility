@@ -66,12 +66,12 @@ public class EditActivity extends MainActivity {
 					String extension = Utility.getFileExtension(fileName);
 					String mimeType = null;
 					if (Utility.APK.toLowerCase().equals(extension)) {
-						mimeType = Utility.MIME_TYPE_APK;
+						mimeType = Utility.MIMETYPE.APK;
 					} else {
 						mimeType = MimeTypeMap.getSingleton()
 								.getMimeTypeFromExtension(extension);
 						if (mimeType == null)
-							mimeType = Utility.TEXT_PLAIN;
+							mimeType = Utility.MIMETYPE.TEXT_PLAIN;
 					}
 					intent.setDataAndType(Uri.fromFile(selectFile), mimeType);
 					try {

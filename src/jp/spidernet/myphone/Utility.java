@@ -30,12 +30,19 @@ public class Utility {
 	private static final String TAG = Utility.class.getSimpleName();
 	private static HashMap<String, Integer> iconsMap = null;
 	private static int THUMBNAIL_SIZE = 100;
-	public static final String TEXT_PLAIN  = "text/plain";
-	public static final String MIME_TORRENT  = "application/x-bittorrent";
-	public static final String MIME_TYPE_APK = "application/vnd.android.package-archive";
+	public interface MIMETYPE {
+		String VIDEO_MPEG  = "video/mpeg";
+		String JPEG  = "image/jpeg";
+		String AUDIO_MPEG  = "audio/mpeg";
+		String TEXT_PLAIN  = "text/plain";
+		String TORRENT  = "application/x-bittorrent";
+		String APK = "application/vnd.android.package-archive";
+		
+	}
 	public static final String APK = "apk";
 	public static final String TORRENT = "torrent";
-	private static final int REPEATING_TIME = 10*60*1000; //10蛻�
+	public static final String TXT = "txt";
+	private static final int REPEATING_TIME = 10*60*1000; 
 	
 	public static int getFileExtensionId(String fileName) {
 		String ext = getFileExtension(fileName);

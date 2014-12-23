@@ -40,6 +40,7 @@
     <string name="search_title">Search Options</string>
     <string name="search_size_title">File Size</string>
     <string name="search_extend_title">File Type</string>
+    <string name="select_file_type">Select file type</string>
 
     <string-array name="search_type">
         <item>Search all</item>
@@ -63,6 +64,16 @@
         <item>Android: *.apk</item>
         <item>Torrent: *.torrent</item>
         <item>None extend</item>
+    </string-array>
+    <string-array name="context_menu">
+        <item>Rename</item>
+        <item>Cut</item>
+    </string-array>
+    <string-array name="select_applications">
+        <item>Video file</item>
+        <item>Audio file</item>
+        <item>Image file</item>
+        <item>Text file</item>
     </string-array>
 
 </resources>

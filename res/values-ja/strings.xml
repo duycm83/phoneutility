@@ -40,6 +40,7 @@
     <string name="search_title">検索指定</string>
     <string name="search_size_title">サイズ</string>
     <string name="search_extend_title">拡張子</string>
+    <string name="select_file_type">ファイルの種類を選択</string>
 
     <string-array name="search_size">
         <item>0 ~ 100KB</item>
@@ -63,6 +64,16 @@
         <item>Android: *.apk</item>
         <item>Torrent: *.torrent</item>
         <item>拡張なし</item>
+    </string-array>
+    <string-array name="context_menu">
+        <item>名前の変更</item>
+        <item>切り取り</item>
+    </string-array>
+    <string-array name="select_applications">
+        <item>動画ファイル</item>
+        <item>音声ファイル</item>
+        <item>画像ファイル</item>
+        <item>テキストファイル</item>
     </string-array>
 
 </resources>

@@ -28,6 +28,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -46,7 +47,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 	private static final String TAG = MainActivity.class.getSimpleName();
 	private static final int DIALOG_ABOUT_ID = 1;
 	private static final int DIALOG_DELETE_ID = 2;
@@ -130,25 +131,29 @@ public class MainActivity extends Activity {
 					String fileName = selectFile.getName();
 					String extension = Utility.getFileExtension(fileName);
 					String mimeType = null;
-					if (Utility.APK.toLowerCase().equals(extension)) {
-						mimeType = Utility.MIME_TYPE_APK;
-					} else if (Utility.TORRENT.equals(extension)) {
+					if (Utility.APK.equalsIgnoreCase(extension)) {
+						mimeType = Utility.MIMETYPE.APK;
+					} else if (Utility.TORRENT.equalsIgnoreCase(extension)) {
 						mimeType = MimeTypeMap.getSingleton()
 								.getMimeTypeFromExtension(extension);
 						if (mimeType == null)
-							mimeType = Utility.MIME_TORRENT;
+							mimeType = Utility.MIMETYPE.TORRENT;
+					} else if(Utility.TXT.equalsIgnoreCase(extension)){
+						mimeType = MimeTypeMap.getSingleton()
+								.getMimeTypeFromExtension(extension);
+						if (mimeType == null)
+							mimeType = Utility.MIMETYPE.TEXT_PLAIN;
 					} else {
-						mimeType = MimeTypeMap.getSingleton()
-								.getMimeTypeFromExtension(extension);
-						if (mimeType == null)
-							mimeType = Utility.TEXT_PLAIN;
+						OpenFileDialog dialog = new OpenFileDialog(intent, Uri.fromFile(selectFile));
+						dialog.show(getSupportFragmentManager(), OpenFileDialog.TAG);
+						return;
 					}
 					intent.setDataAndType(Uri.fromFile(selectFile), mimeType);
 					try {
 						startActivity(intent);
 					} catch (Exception e) {
 						e.printStackTrace();
-						if (Utility.MIME_TORRENT.equals(mimeType))
+						if (Utility.MIMETYPE.TORRENT.equalsIgnoreCase(mimeType))
 							showDialog(DIALOG_PLAY_SEARCH_TORRENT_ID);
 					}
 				} else {

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="context_menu">
-        <item >Rename</item>
-        <item >Cut</item>
-    </string-array>
-    
-</resources>
