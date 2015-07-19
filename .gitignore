@@ -3,4 +3,9 @@ gen/
 proguard/
 .DS_Store
 Thumbs.db
-
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
